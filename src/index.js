@@ -1,17 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, { Component } from "react";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Layout from "./Components/Layout/Layout";
+import Depositos from "./Components/Depositos/Depositos";
+
+const Root = (
+  <BrowserRouter>
+    <Layout>
+      <Switch>
+        <Route path="/depositos" component={Depositos} />
+        <Route path="/depositos/:idItem" component={Depositos} />
+        <Redirect to="/depositos" />
+      </Switch>
+    </Layout>
+  </BrowserRouter>
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(Root, document.getElementById("root"));
