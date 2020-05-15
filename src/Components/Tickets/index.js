@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Depositos from "./Depositos";
+import Tickets from "./Tickets";
 
 const Details = props => {
   return (
     <React.Fragment>
-      <Depositos />
+      <Tickets></Tickets>
     </React.Fragment>
   );
 };

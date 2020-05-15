@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -16,68 +16,81 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-
+import Badge from "@material-ui/core/Badge";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
 import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
+import SettingsIcon from "@material-ui/icons/Settings";
 import DescriptionIcon from "@material-ui/icons/Description";
 import { Link } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none"
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0
+    flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
   },
   drawerHeader: {
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth
+    marginLeft: -drawerWidth,
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0
-  }
+    marginLeft: 0,
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
+  },
+  grow: {
+    flexGrow: 1,
+  },
 }));
 
 const Layout = ({ children, history }) => {
@@ -85,6 +98,7 @@ const Layout = ({ children, history }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [user, setUser] = useState({});
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -97,39 +111,75 @@ const Layout = ({ children, history }) => {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+  const menuId = "primary-search-account-menu";
+  const handleProfileMenuOpen = (event) => {
+    //setAnchorEl(event.currentTarget);
+  };
+  useEffect(() => {
+    try {
+      const jwt = localStorage.getItem("token");
+      const { data } = jwtDecode(jwt);
+      setUser((user) => data);
+      console.log(user);
+    } catch (error) {}
+  }, [user.username]);
 
   return (
     <React.Fragment>
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open
-          })}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              Sistema de tickets
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        {user.username && (
+          <AppBar
+            position="fixed"
+            className={clsx(classes.appBar, {
+              [classes.appBarShift]: open,
+            })}
+          >
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton, open && classes.hide)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap>
+                Sistema de tickets
+              </Typography>
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <IconButton
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                >
+                  <Badge badgeContent={17} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+        )}
+
         <Drawer
           className={classes.drawer}
           variant="persistent"
           anchor="left"
           open={open}
           classes={{
-            paper: classes.drawerPaper
+            paper: classes.drawerPaper,
           }}
         >
           <div className={classes.drawerHeader}>
@@ -146,20 +196,20 @@ const Layout = ({ children, history }) => {
             <ListItem
               button
               selected={selectedIndex === 0}
-              onClick={event => handleListItemClick(event, 0)}
+              onClick={(event) => handleListItemClick(event, 0)}
               component={Link}
               to="/tickets"
             >
               <ListItemIcon>
                 <ConfirmationNumberIcon />
               </ListItemIcon>
-              <ListItemText primary="Tickets" />
+              <ListItemText primary="Movimientos" />
             </ListItem>
 
             <ListItem
               button
               selected={selectedIndex === 1}
-              onClick={event => handleListItemClick(event, 1)}
+              onClick={(event) => handleListItemClick(event, 1)}
               component={Link}
               to="/depositos"
             >
@@ -172,7 +222,7 @@ const Layout = ({ children, history }) => {
             <ListItem
               button
               selected={selectedIndex === 2}
-              onClick={event => handleListItemClick(event, 2)}
+              onClick={(event) => handleListItemClick(event, 2)}
               component={Link}
               to="/retornos"
             >
@@ -185,7 +235,7 @@ const Layout = ({ children, history }) => {
             <ListItem
               button
               selected={selectedIndex === 3}
-              onClick={event => handleListItemClick(event, 3)}
+              onClick={(event) => handleListItemClick(event, 3)}
               component={Link}
               to="/facturas"
             >
@@ -194,12 +244,25 @@ const Layout = ({ children, history }) => {
               </ListItemIcon>
               <ListItemText primary="Facturas" />
             </ListItem>
+            <Divider />
+            <ListItem
+              button
+              selected={selectedIndex === 3}
+              onClick={(event) => handleListItemClick(event, 3)}
+              component={Link}
+              to="/settings"
+            >
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Configuracion" />
+            </ListItem>
           </List>
           <Divider />
         </Drawer>
         <main
           className={clsx(classes.content, {
-            [classes.contentShift]: open
+            [classes.contentShift]: open,
           })}
         >
           <div className={classes.drawerHeader} />

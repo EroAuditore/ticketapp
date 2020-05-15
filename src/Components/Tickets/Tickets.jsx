@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import {
   Typography,
   Button,
@@ -16,11 +15,16 @@ import TableContainer from "@material-ui/core/TableContainer";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-
-import { startGetDepositos } from "./../../Redux/Actions/depositos";
-import { depositosResult, isDepositosLoading } from "./../../Redux/Selectors";
+import { ticketsResult, isTicketsLoading } from "./../../Redux/Selectors";
 import TableList from "./TableList";
-import findTextCustom from "./../Common/findTextCustom";
+import CreateIcon from "@material-ui/icons/Create";
+import {
+  startGetTickets,
+  startFilterMovimiento,
+} from "../../Redux/Actions/tickets";
+import { withRouter } from "react-router-dom";
+
+import CustomTextBox from "./../Common/CustomTextBox";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -37,21 +41,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Depositos = () => {
+const Tickets = ({ history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const depositosList = useSelector((state) => depositosResult(state));
+
+  const data = useSelector((state) => ticketsResult(state));
+
   const [drawerState, setdrawerState] = useState(false);
+  const [filterText, setFilterText] = useState("");
 
   const toggleDrawer = () => {
     setdrawerState(!drawerState);
-    console.log(drawerState);
+  };
+
+  const handleAddTicket = () => {
+    history.push("/tickets/nuevo");
+  };
+
+  const handleFilterClick = () => {
+    console.log("Filter text: " + filterText);
+    const findObj = { filterText: filterText };
+
+    dispatch(startFilterMovimiento(findObj));
+  };
+
+  const handleFiltertextChange = (e) => {
+    setFilterText(e.target.value);
   };
 
   useEffect(() => {
-    const getDepositos = () => dispatch(startGetDepositos());
-    getDepositos();
-    /*if (!depositosList) dispatch(startGetDepositos());*/
+    //consultamos con la api la base de datos llamamos startGetTickets
+    const getTickets = () => dispatch(startGetTickets());
+    getTickets();
   }, []);
 
   return (
@@ -60,13 +81,26 @@ const Depositos = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <div className={classes.paperTitle}>
-              <h2>Depositos</h2>
+              <h2>Movimientos</h2>
             </div>
           </Grid>
           <Grid item xs>
-            <findTextCustom />
+            <CustomTextBox
+              onClick={handleFilterClick}
+              onChange={handleFiltertextChange}
+            />
           </Grid>
-          <Grid item xs></Grid>
+          <Grid item xs>
+            <Button
+              variant="contained"
+              color="default"
+              className={classes.button}
+              startIcon={<CreateIcon />}
+              onClick={handleAddTicket}
+            >
+              Nuevo
+            </Button>
+          </Grid>
           <Grid item xs>
             <Button
               variant="outlined"
@@ -82,7 +116,7 @@ const Depositos = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
-              <TableList data={depositosList} toggleDrawer={toggleDrawer} />
+              <TableList data={data} toggleDrawer={toggleDrawer} />
             </TableContainer>
           </Grid>
         </Grid>
@@ -126,4 +160,4 @@ const Depositos = () => {
   );
 };
 
-export default Depositos;
+export default withRouter(Tickets);
