@@ -59,9 +59,7 @@ const Tickets = ({ history }) => {
   };
 
   const handleFilterClick = () => {
-    console.log("Filter text: " + filterText);
     const findObj = { filterText: filterText };
-
     dispatch(startFilterMovimiento(findObj));
   };
 

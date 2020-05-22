@@ -9,3 +9,5 @@ export const ticketsResult = (state) => get(state, "tickets.data");
 export const facturaSelector = (state) => get(state, "movimientos.facturas");
 export const depositoSelector = (state) => get(state, "movimientos.depositos");
 export const retornoSelector = (state) => get(state, "movimientos.retornos");
+
+export const userSelector = (state) => get(state, "users.user");

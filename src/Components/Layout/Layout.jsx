@@ -98,7 +98,7 @@ const Layout = ({ children, history }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -120,7 +120,6 @@ const Layout = ({ children, history }) => {
       const jwt = localStorage.getItem("token");
       const { data } = jwtDecode(jwt);
       setUser((user) => data);
-      console.log(user);
     } catch (error) {}
   }, [user.username]);
 
@@ -247,8 +246,8 @@ const Layout = ({ children, history }) => {
             <Divider />
             <ListItem
               button
-              selected={selectedIndex === 3}
-              onClick={(event) => handleListItemClick(event, 3)}
+              selected={selectedIndex === 4}
+              onClick={(event) => handleListItemClick(event, 4)}
               component={Link}
               to="/settings"
             >
