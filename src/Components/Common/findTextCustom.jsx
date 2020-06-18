@@ -29,32 +29,6 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-/*
-export default function CustomizedInputBase() {
-  const classes = styles();
-
-  return (
-    <Paper className={classes.root}>
-      <IconButton className={classes.iconButton} aria-label="menu"></IconButton>
-      <InputBase
-        className={classes.input}
-        placeholder="Buscar..."
-        inputProps={{ "aria-label": " buscar" }}
-      />
-      <Divider className={classes.divider} orientation="vertical" />
-
-      <IconButton
-        type="submit"
-        className={classes.iconButton}
-        aria-label="search"
-      >
-        <SearchIcon />
-      </IconButton>
-    </Paper>
-  );
-}
-*/
-
 const findTextCustom = (props) => {
   return (
     <Button variant="contained" color="primary">

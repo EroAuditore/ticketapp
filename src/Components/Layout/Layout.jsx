@@ -97,8 +97,8 @@ const Layout = ({ children, history }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const [user, setUser] = useState([]);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [user, setUser] = useState(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -121,13 +121,13 @@ const Layout = ({ children, history }) => {
       const { data } = jwtDecode(jwt);
       setUser((user) => data);
     } catch (error) {}
-  }, [user.username]);
+  }, []);
 
   return (
     <React.Fragment>
       <div className={classes.root}>
         <CssBaseline />
-        {user.username && (
+        {user && (
           <AppBar
             position="fixed"
             className={clsx(classes.appBar, {

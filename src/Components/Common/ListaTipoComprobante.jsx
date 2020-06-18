@@ -10,7 +10,7 @@ class ListaTipoComprobante extends Component {
         id="tipoComprobante"
         name="tipoComprobante"
       >
-        <option value="0">Selecciona el tipo de comprobante</option>
+        <option value="">Selecciona el tipo de comprobante</option>
         <option value="Comprobante de Ingreso">Comprobante de Ingreso</option>
         <option value="Comprobante de Egreso">Comprobante de Egreso</option>
         <option value="Comprobante de Traslado">Comprobante de Traslado</option>

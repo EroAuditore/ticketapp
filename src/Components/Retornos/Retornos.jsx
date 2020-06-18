@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
- 
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Drawer,
-} from "@material-ui/core";
+import { Button, Container, Grid, Paper, Drawer } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import FilterListIcon from "@material-ui/icons/FilterList";
@@ -40,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Tickets = ({ history }) => {
+const Retornos = ({ history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -78,7 +71,7 @@ const Tickets = ({ history }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <div className={classes.paperTitle}>
-              <h2>Movimientos</h2>
+              <h2>Retornos</h2>
             </div>
           </Grid>
           <Grid item xs>
@@ -125,4 +118,4 @@ const Tickets = ({ history }) => {
   );
 };
 
-export default withRouter(Tickets);
+export default withRouter(Retornos);

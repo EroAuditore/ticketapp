@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import jwtDecode from "jwt-decode";
 
 const LoginHome = () => {
   const classes = styles();
@@ -46,10 +47,14 @@ const LoginHome = () => {
 
   const doSubmit = async () => {
     try {
-      console.log("do Submit");
       const { data: jwt } = await login(data.username, data.password);
+      const {
+        data: { Area },
+      } = jwtDecode(jwt);
+      console.log("user", Area);
       localStorage.setItem("token", jwt);
-      window.location = "/tickets";
+
+      /*window.location = "/tickets";*/
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         setErrors({ username: ex.response.data["error"] });

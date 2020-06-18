@@ -10,7 +10,7 @@ class ListaBancos extends Component {
         onChange={this.props.onChange}
         value={this.props.value}
       >
-        <option value="0">Selecciona el banco</option>
+        <option value="">Selecciona el banco</option>
         <option value="Bancomer">Bancomer</option>
         <option value="Banamex">Banamex</option>
         <option value="Santander">Santander</option>

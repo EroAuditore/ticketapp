@@ -5,7 +5,7 @@ import {
   SUCCESS_SAVE_MOVIMIENTO,
   ERROR_SAVE_MOVIMIENTO,
 } from "../Actions/movimientos";
-import { apiCall } from "./../api/index";
+import apiCall from "./../api/index";
 import {
   retornoSelector,
   depositoSelector,

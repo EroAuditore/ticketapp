@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import jwtDecode from "jwt-decode";
+import { withRouter } from "react-router-dom";
 import {
- 
+  Typography,
   Button,
   Container,
   Grid,
@@ -9,20 +11,17 @@ import {
   Drawer,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import FilterListIcon from "@material-ui/icons/FilterList";
 import TableContainer from "@material-ui/core/TableContainer";
-
-import { ticketsResult, isTicketsLoading } from "./../../Redux/Selectors";
+import { mfacturaSelector } from "./../../Redux/Selectors";
 import TableList from "./TableList";
 import CreateIcon from "@material-ui/icons/Create";
 import {
-  startGetTickets,
-  startFilterMovimiento,
-} from "../../Redux/Actions/tickets";
-import { withRouter } from "react-router-dom";
-
+  startGetFacturas,
+  startAttendFacturas,
+} from "../../Redux/Actions/facturas";
 import CustomTextBox from "./../Common/CustomTextBox";
+import AlertTomar from "./AlertTomar";
 import FilterForm from "./FilterForm";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,17 +39,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Tickets = ({ history }) => {
+const Facturas = ({ history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => ticketsResult(state));
+  const data = useSelector((state) => mfacturaSelector(state));
 
   const [drawerState, setdrawerState] = useState(false);
+  const [alertState, setAlertState] = useState(false);
   const [filterText, setFilterText] = useState("");
+  const [selectedTake, setSelectedTake] = useState({});
 
   const toggleDrawer = () => {
     setdrawerState(!drawerState);
+  };
+
+  const handleTake = () => {
+    const jwt = localStorage.getItem("token");
+    const { data: userData } = jwtDecode(jwt);
+    selectedTake.ID_usuario = userData.ID_usuario;
+    dispatch(startAttendFacturas(selectedTake));
+  };
+
+  const toggleTake = (row) => {
+    setSelectedTake(row);
+    setAlertState(!alertState);
   };
 
   const handleAddTicket = () => {
@@ -59,7 +72,7 @@ const Tickets = ({ history }) => {
 
   const handleFilterClick = () => {
     const findObj = { filterText: filterText };
-    dispatch(startFilterMovimiento(findObj));
+    /*dispatch(startFilterMovimiento(findObj));*/
   };
 
   const handleFiltertextChange = (e) => {
@@ -68,8 +81,8 @@ const Tickets = ({ history }) => {
 
   useEffect(() => {
     //consultamos con la api la base de datos llamamos startGetTickets
-    const getTickets = () => dispatch(startGetTickets());
-    getTickets();
+    const getFacturas = () => dispatch(startGetFacturas());
+    getFacturas();
   }, []);
 
   return (
@@ -78,7 +91,7 @@ const Tickets = ({ history }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <div className={classes.paperTitle}>
-              <h2>Movimientos</h2>
+              <h2>Facturación</h2>
             </div>
           </Grid>
           <Grid item xs>
@@ -113,16 +126,21 @@ const Tickets = ({ history }) => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
-              <TableList data={data} toggleDrawer={toggleDrawer} />
+              <TableList data={data} toggleTake={(row) => toggleTake(row)} />
             </TableContainer>
           </Grid>
         </Grid>
         <Drawer anchor="right" open={drawerState} onClose={toggleDrawer}>
           <FilterForm toggleDrawer={toggleDrawer} />
         </Drawer>
+        <AlertTomar
+          alertState={alertState}
+          handleClose={toggleTake}
+          handleTake={handleTake}
+        />
       </Container>
     </React.Fragment>
   );
 };
 
-export default withRouter(Tickets);
+export default withRouter(Facturas);

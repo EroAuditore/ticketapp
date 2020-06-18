@@ -6,9 +6,7 @@ import ListaCondicionesPago from "../Common/ListaCondicionesPago";
 
 import ListaFormaPago from "../Common/ListaFormaPago";
 
-const FacturaForm = (props) => {
-  const { handleOnChange } = props;
-
+const FacturaForm = ({ handleOnChange }) => {
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} sm={12}>
@@ -18,10 +16,10 @@ const FacturaForm = (props) => {
       </Grid>
       <Grid item xs={12} sm={6}>
         <TextField
+          label="RFC"
           required
           id="rfcFactura"
           name="rfcFactura"
-          label="RFC"
           fullWidth
           variant="outlined"
           size="small"

@@ -1,4 +1,5 @@
-import { put, call, takeLatest, takeEvery, all } from "redux-saga/effects";
+import { put, call, takeEvery, all } from "redux-saga/effects";
+
 import {
   START_GET_TICKETS,
   SUCCESS_GET_TICKETS,
@@ -7,7 +8,7 @@ import {
   SUCCESS_FILTER_MOVIMIENTO,
   ERROR_FILTER_MOVIMIENTO,
 } from "../Actions/tickets";
-import { apiCall } from "./../api/index";
+import apiCall from "./../api/index";
 
 //funcion generadora
 export function* getTickets({ payload }) {
@@ -21,7 +22,7 @@ export function* getTickets({ payload }) {
 
 export function* filterTickets({ payload }) {
   console.log("filter ticket saga");
-  console.log(payload);
+
   try {
     const result = yield call(
       apiCall,

@@ -8,6 +8,7 @@ class ListaCondicionesPago extends Component {
         id="condicionPago"
         name="condicionPago"
         onChange={this.props.onChange}
+        value={this.props.value}
       >
         <option value="">Selecciona la condición de pago</option>
         <option value="Pago al contado">Pago al contado</option>

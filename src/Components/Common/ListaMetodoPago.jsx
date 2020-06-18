@@ -11,7 +11,7 @@ class ListaMetodoPago extends Component {
         onChange={this.props.onChange}
         value={this.props.value}
       >
-        <option value="0 ">Selecciona el metodo de pago</option>
+        <option value="">Selecciona el metodo de pago</option>
         <option value="Pago en una sola exhibición">
           Pago en una sola exhibición
         </option>

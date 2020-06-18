@@ -7,6 +7,10 @@ export const isTicketsLoading = (state) => get(state, "tickets.isLoading");
 export const ticketsResult = (state) => get(state, "tickets.data");
 
 export const facturaSelector = (state) => get(state, "movimientos.facturas");
+export const mfacturaSelector = (state) => get(state, "facturas.data");
+export const attFacturasSelector = (state) =>
+  get(state, "facturas.facturasMov");
+
 export const depositoSelector = (state) => get(state, "movimientos.depositos");
 export const retornoSelector = (state) => get(state, "movimientos.retornos");
 

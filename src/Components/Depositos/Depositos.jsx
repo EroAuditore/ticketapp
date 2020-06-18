@@ -10,17 +10,13 @@ import {
   Drawer,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import CloseIcon from "@material-ui/icons/Close";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import TableContainer from "@material-ui/core/TableContainer";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-
 import { startGetDepositos } from "./../../Redux/Actions/depositos";
 import { depositosResult, isDepositosLoading } from "./../../Redux/Selectors";
 import TableList from "./TableList";
-import findTextCustom from "./../Common/findTextCustom";
+import CustomTextBox from "./../Common/CustomTextBox";
+import FilterForm from "./FilterForm";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -42,6 +38,7 @@ const Depositos = () => {
   const dispatch = useDispatch();
   const depositosList = useSelector((state) => depositosResult(state));
   const [drawerState, setdrawerState] = useState(false);
+  const [filterText, setFilterText] = useState("");
 
   const toggleDrawer = () => {
     setdrawerState(!drawerState);
@@ -54,6 +51,15 @@ const Depositos = () => {
     /*if (!depositosList) dispatch(startGetDepositos());*/
   }, []);
 
+  const handleFilterClick = () => {
+    const findObj = { filterText: filterText };
+    /*dispatch(startFilterMovimiento(findObj));*/
+  };
+
+  const handleFiltertextChange = (e) => {
+    setFilterText(e.target.value);
+  };
+
   return (
     <React.Fragment>
       <Container>
@@ -64,7 +70,10 @@ const Depositos = () => {
             </div>
           </Grid>
           <Grid item xs>
-            <findTextCustom />
+            <CustomTextBox
+              onClick={handleFilterClick}
+              onChange={handleFiltertextChange}
+            />
           </Grid>
           <Grid item xs></Grid>
           <Grid item xs>
@@ -87,39 +96,7 @@ const Depositos = () => {
           </Grid>
         </Grid>
         <Drawer anchor="right" open={drawerState} onClose={toggleDrawer}>
-          <div className={classes.drawerContent}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Button
-                  size="small"
-                  onClick={toggleDrawer}
-                  startIcon={<CloseIcon />}
-                >
-                  Cerrar
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h5" component="h2">
-                      Validar deposito:
-                    </Typography>
-                    <Typography color="textSecondary">Tciket:</Typography>
-                    <Typography variant="body2" component="p">
-                      Monto:
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">Validar</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12}>
-                <div>Detalle</div>
-              </Grid>
-            </Grid>
-          </div>
+          <FilterForm toggleDrawer={toggleDrawer} />
         </Drawer>
       </Container>
     </React.Fragment>

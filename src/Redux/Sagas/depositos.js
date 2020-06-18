@@ -2,9 +2,9 @@ import { put, call, takeLatest } from "redux-saga/effects";
 import {
   START_GET_DEPOSITOS,
   SUCCESS_GET_DEPOSITOS,
-  ERROR_GET_DEPOSITOS
+  ERROR_GET_DEPOSITOS,
 } from "../Actions/depositos";
-import { apiCall } from "./../api/index";
+import apiCall from "./../api/index";
 
 //funcion generadora
 export function* getDepositos({ payload }) {

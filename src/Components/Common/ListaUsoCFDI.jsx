@@ -11,7 +11,7 @@ class ListaUsoCFDI extends Component {
         onChange={this.props.onChange}
         value={this.props.value}
       >
-        <option value="0">Selecciona el uso CFDI</option>
+        <option value="">Selecciona el uso CFDI</option>
         <option value="Adquisición de mercancías">
           Adquisición de mercancías
         </option>
