@@ -272,6 +272,7 @@ const TicketNew = () => {
               <Tab label="Facturas" />
               <Tab label="Depositos" />
               <Tab label="Retornos" />
+              <Tab label="Comisiones" />
             </Tabs>
           </Grid>
           <Grid item xs={1}>
@@ -296,6 +297,11 @@ const TicketNew = () => {
                   handleDeleteClick={(id) => handleDeleteClick(id)}
                 />
               </TabPanel>
+              <TabPanel value={activeTab} index={3}>
+                <RetornosTab
+                  handleDeleteClick={(id) => handleDeleteClick(id)}
+                />
+              </TabPanel>
             </Paper>
           </Grid>
         </Grid>
@@ -315,6 +321,8 @@ const TicketNew = () => {
                 selectedDate={deposito.fechaDeposito}
               />
             ) : activeTab === 2 ? (
+              <RetornoForm handleOnChange={handleOnChangeRetornoForm} />
+            ) : activeTab === 3 ? (
               <RetornoForm handleOnChange={handleOnChangeRetornoForm} />
             ) : (
               <div></div>

@@ -25,6 +25,8 @@ import NuevoUsuario from "./Components/Settings/NuevoUsuario";
 import EditarUsuario from "./Components/Settings/EditarUsuario";
 import history from "./history";
 import Atender from "./Components/Facturas/Atender/Atender";
+import Solicitud from "./Components/Facturas/Solicitud";
+import NuevaSolicitud from "./Components/Facturas/Solicitud/NuevaSolicitud";
 
 const Root = (
   <Provider store={store}>
@@ -38,7 +40,9 @@ const Root = (
           <Route path="/settings/editar/:idItem" component={EditarUsuario} />
           <Route path="/settings/nuevo" component={NuevoUsuario} />
           <Route path="/settings" component={Settings} />
-          <Route path="/facturas/Atender" component={Atender} />
+          <Route path="/facturas/atender" component={Atender} />
+          <Route path="/facturas/solicitud/nueva" component={NuevaSolicitud} />
+          <Route path="/facturas/solicitud" component={Solicitud} />
           <Route path="/facturas" component={Facturas} />
           <Route path="/retornos" component={Retornos} />
 

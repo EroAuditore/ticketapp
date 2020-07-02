@@ -236,6 +236,19 @@ const Layout = ({ children, history }) => {
               selected={selectedIndex === 3}
               onClick={(event) => handleListItemClick(event, 3)}
               component={Link}
+              to="/facturas/solicitud"
+            >
+              <ListItemIcon>
+                <DescriptionIcon />
+              </ListItemIcon>
+              <ListItemText primary="Solicitud Factura" />
+            </ListItem>
+
+            <ListItem
+              button
+              selected={selectedIndex === 3}
+              onClick={(event) => handleListItemClick(event, 3)}
+              component={Link}
               to="/facturas"
             >
               <ListItemIcon>
