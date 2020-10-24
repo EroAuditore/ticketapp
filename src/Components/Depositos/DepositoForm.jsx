@@ -21,6 +21,18 @@ const DepositoForm = (props) => {
           Nuevo deposito a validar
         </Typography>
       </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="empresa"
+          name="empresa"
+          label="Empresa que recibe deposito"
+          fullWidth
+          variant="outlined"
+          size="small"
+          onChange={handleOnChange}
+        />
+      </Grid>
 
       <Grid item xs={12} sm={6}>
         <TextField

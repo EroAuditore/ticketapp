@@ -54,7 +54,7 @@ const LoginHome = () => {
       console.log("user", Area);
       localStorage.setItem("token", jwt);
 
-      /*window.location = "/tickets";*/
+      window.location = "/tickets";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         setErrors({ username: ex.response.data["error"] });

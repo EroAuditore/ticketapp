@@ -18,11 +18,13 @@ import TableList from "./TableList";
 import CreateIcon from "@material-ui/icons/Create";
 import {
   startGetFacturas,
-  startAttendFacturas,
+  startGenFactura,
+  startGetMovimientoP,
 } from "../../Redux/Actions/facturas";
 import CustomTextBox from "./../Common/CustomTextBox";
 import AlertTomar from "./AlertTomar";
 import FilterForm from "./FilterForm";
+import { getCurrentUserID } from "./../../Services/usersService";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -55,20 +57,18 @@ const Facturas = ({ history }) => {
   };
 
   const handleTake = () => {
-    const jwt = localStorage.getItem("token");
-    const { data: userData } = jwtDecode(jwt);
-    selectedTake.ID_usuario = userData.ID_usuario;
-    dispatch(startAttendFacturas(selectedTake));
+    dispatch(startGenFactura(selectedTake));
+    dispatch(startGetMovimientoP(selectedTake));
   };
 
   const toggleTake = (row) => {
-    setSelectedTake(row);
+    setSelectedTake({ ...selectedTake, ...row });
     setAlertState(!alertState);
   };
 
-  const handleAddTicket = () => {
+  /*const handleAddTicket = () => {
     history.push("/tickets/nuevo");
-  };
+  };*/
 
   const handleFilterClick = () => {
     const findObj = { filterText: filterText };
@@ -83,6 +83,8 @@ const Facturas = ({ history }) => {
     //consultamos con la api la base de datos llamamos startGetTickets
     const getFacturas = () => dispatch(startGetFacturas());
     getFacturas();
+
+    setSelectedTake({ ...selectedTake, currentUserId: getCurrentUserID() });
   }, []);
 
   return (
@@ -100,17 +102,7 @@ const Facturas = ({ history }) => {
               onChange={handleFiltertextChange}
             />
           </Grid>
-          <Grid item xs>
-            <Button
-              variant="contained"
-              color="default"
-              className={classes.button}
-              startIcon={<CreateIcon />}
-              onClick={handleAddTicket}
-            >
-              Nuevo
-            </Button>
-          </Grid>
+          <Grid item xs></Grid>
           <Grid item xs>
             <Button
               variant="outlined"

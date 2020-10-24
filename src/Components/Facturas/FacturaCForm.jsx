@@ -6,7 +6,9 @@ import {
   Typography,
   FormControlLabel,
   Switch,
+  Button,
 } from "@material-ui/core";
+import SwapHorizontalCircleIcon from "@material-ui/icons/SwapHorizontalCircle";
 import NumberFormatCustom from "./../Common/NumberFormatCustom";
 
 import ListaTipoComprobante from "./../Common/ListaTipoComprobante";
@@ -15,8 +17,14 @@ import ListaCondicionesPago from "../Common/ListaCondicionesPago";
 
 import ListaFormaPago from "../Common/ListaFormaPago";
 import ListaMetodoPago from "./../Common/ListaMetodoPago";
+import ListaMoneda from "./../Common/ListaMoneda";
 
-const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
+const FacturaCForm = ({
+  handleOnChange,
+  handleChecked,
+  data,
+  onCalculoTotal,
+}) => {
   const {
     RFC,
     Cliente,
@@ -31,11 +39,17 @@ const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
     direccionCliente,
     email,
     generada,
+    moneda,
+    subTotal,
+    iva,
   } = data;
   return (
     <React.Fragment>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={6}>
+          <ListaMoneda value={moneda} onChange={handleOnChange} />
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <TextField
             label="RFC"
             required
@@ -48,12 +62,12 @@ const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
             onChange={handleOnChange}
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             id="Cliente"
             name="Cliente"
-            label="Cliente de la factura"
+            label="Razon social"
             value={Cliente}
             fullWidth
             variant="outlined"
@@ -61,13 +75,13 @@ const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
             onChange={handleOnChange}
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="empresaFacturadora"
-            name="empresaFacturadora"
-            label="Empresa que factura"
-            value={empresaFacturadora}
+            id="email"
+            name="email"
+            label="email"
+            value={email}
             fullWidth
             variant="outlined"
             size="small"
@@ -87,7 +101,51 @@ const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
             onChange={handleOnChange}
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            required
+            id="subTotal"
+            name="subTotal"
+            label="Subtotal de la factura"
+            value={subTotal}
+            fullWidth
+            variant="outlined"
+            size="small"
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+            }}
+            onChange={handleOnChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            endIcon={
+              <SwapHorizontalCircleIcon>Calcular</SwapHorizontalCircleIcon>
+            }
+            onClick={onCalculoTotal}
+          >
+            Calcular
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            required
+            id="iva"
+            name="iva"
+            label="IVA"
+            value={iva}
+            fullWidth
+            variant="outlined"
+            size="small"
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+            }}
+            onChange={handleOnChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="montoTotal"
@@ -103,6 +161,20 @@ const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
             onChange={handleOnChange}
           />
         </Grid>
+        <Grid item xs={12} sm={12}>
+          <TextField
+            required
+            id="empresaFacturadora"
+            name="empresaFacturadora"
+            label="Empresa que factura"
+            value={empresaFacturadora}
+            fullWidth
+            variant="outlined"
+            size="small"
+            onChange={handleOnChange}
+          />
+        </Grid>
+
         <Grid item xs={12} sm={12}>
           <ListaCondicionesPago
             onChange={handleOnChange}
@@ -125,7 +197,7 @@ const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
         <Grid item xs={12} sm={12}>
           <ListaMetodoPago onChange={handleOnChange} value={metodoPago} />
         </Grid>
-        <Grid item xs={12} sm={12}>
+        {/*<Grid item xs={12} sm={12}>
           <FormControlLabel
             control={
               <Switch
@@ -137,8 +209,8 @@ const FacturaCForm = ({ handleOnChange, handleChecked, data }) => {
               />
             }
             label="Generada"
-          />
-        </Grid>
+          /> 
+          </Grid>*/}
       </Grid>
     </React.Fragment>
   );

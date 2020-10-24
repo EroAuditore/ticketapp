@@ -9,11 +9,13 @@ import {
   ERROR_FILTER_MOVIMIENTO,
 } from "../Actions/tickets";
 import apiCall from "./../api/index";
+import { getCurrentUserID } from "./../../Services/usersService";
 
 //funcion generadora
 export function* getTickets({ payload }) {
+  const userData = { userId: getCurrentUserID() };
   try {
-    const result = yield call(apiCall, "/tickets", null, null, "GET");
+    const result = yield call(apiCall, "/tickets", userData, null, "POST");
     yield put({ type: SUCCESS_GET_TICKETS, result });
   } catch (error) {
     yield put({ type: ERROR_GET_TICKETS, error });

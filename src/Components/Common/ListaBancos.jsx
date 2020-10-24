@@ -6,7 +6,8 @@ class ListaBancos extends Component {
     return (
       <select
         className="custom-select custom-select-sm"
-        id="banco"
+        id="Banco"
+        name="Banco"
         onChange={this.props.onChange}
         value={this.props.value}
       >

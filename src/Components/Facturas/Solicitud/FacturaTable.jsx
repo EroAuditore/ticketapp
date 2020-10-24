@@ -5,18 +5,22 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import Button from "@material-ui/core/Button";
 import { useSelector } from "react-redux";
+import NumberFormat from "react-number-format";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import { facturaSelector } from "./../../../Redux/Selectors";
 
-const FacturaTable = ({ data }) => {
-  /* const data = useSelector((state) => facturaSelector(state));*/
+const FacturaTable = ({ onDelete, handleAddClick }) => {
+  const data = useSelector((state) => facturaSelector(state));
 
   return (
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell>#</TableCell>
-          <TableCell align="left">RFC</TableCell>
+          <TableCell align="left">Moneda </TableCell>
+          <TableCell align="left">RFC </TableCell>
           <TableCell align="left">Cliente</TableCell>
           <TableCell align="left">Empresa</TableCell>
           <TableCell align="left">Concepto</TableCell>
@@ -31,26 +35,39 @@ const FacturaTable = ({ data }) => {
         {data &&
           data.map((row) => (
             <TableRow key={row._id}>
-              <TableCell component="th" scope="row">
-                {row._id}
-              </TableCell>
-              <TableCell align="left">{row.rfcFactura}</TableCell>
-              <TableCell align="left">{row.clienteFactura}</TableCell>
-              <TableCell align="left">{row.empresaFactura}</TableCell>
+              <TableCell align="left">{row.moneda}</TableCell>
+              <TableCell align="left">{row.RFC}</TableCell>
+              <TableCell align="left">{row.Cliente}</TableCell>
+              <TableCell align="left">{row.empresaFacturadora}</TableCell>
               <TableCell align="left">{row.conceptoFactura}</TableCell>
               <TableCell align="left">{row.condicionPago}</TableCell>
               <TableCell align="left">{row.formaPago}</TableCell>
-              <TableCell align="left">{row.montoFactura}</TableCell>
+              <TableCell align="left">
+                <NumberFormat
+                  value={row.montoTotal}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"$"}
+                />
+              </TableCell>
 
               <TableCell align="left">
-                <Button
-                  variant="outlined"
-                  size="small"
+                <IconButton
                   color="primary"
-                  /*onClick={() => handleDeleteClick(row._id)} */
+                  aria-label="Borrar"
+                  component="span"
+                  onClick={() => onDelete(row)}
                 >
-                  Borrar
-                </Button>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton
+                  color="primary"
+                  aria-label="Partidas"
+                  component="span"
+                  onClick={() => handleAddClick(row)}
+                >
+                  <ListAltIcon />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}

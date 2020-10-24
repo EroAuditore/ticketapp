@@ -5,10 +5,11 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import Button from "@material-ui/core/Button";
-
 import { useSelector } from "react-redux";
 import { retornoSelector } from "./../../Redux/Selectors";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import NumberFormat from "react-number-format";
 
 const RetornosTab = (props) => {
   const { handleDeleteClick } = props;
@@ -18,11 +19,12 @@ const RetornosTab = (props) => {
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell>No.</TableCell>
-
           <TableCell align="left">Nombre</TableCell>
-          <TableCell align="left">Entidad</TableCell>
+          <TableCell align="left">Tipo retorno</TableCell>
+          <TableCell align="left">Banco</TableCell>
           <TableCell align="left">Cuenta</TableCell>
+          <TableCell align="left">Swift</TableCell>
+          <TableCell align="left">Dir. Banco</TableCell>
           <TableCell align="left">Monto</TableCell>
           <TableCell align="left">Comentario</TableCell>
         </TableRow>
@@ -30,23 +32,30 @@ const RetornosTab = (props) => {
       <TableBody>
         {data.map((row) => (
           <TableRow key={row._id}>
-            <TableCell component="th" scope="row">
-              {row._id}
-            </TableCell>
             <TableCell align="left">{row.nombreRetorno}</TableCell>
-            <TableCell align="left">{row.entidadRetorno}</TableCell>
+            <TableCell align="left">{row.formaRetorno}</TableCell>
+            <TableCell align="left">{row.Banco}</TableCell>
             <TableCell align="left">{row.cuentaRetorno}</TableCell>
-            <TableCell align="left">{row.retornoMonto}</TableCell>
+            <TableCell align="left">{row.codigoSwift}</TableCell>
+            <TableCell align="left">{row.direccionBanco}</TableCell>
+            <TableCell align="left">
+              <NumberFormat
+                value={row.retornoMonto}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+              />
+            </TableCell>
             <TableCell align="left">{row.comentarioRetorno}</TableCell>
             <TableCell align="left">
-              <Button
-                variant="outlined"
-                size="small"
+              <IconButton
                 color="primary"
-                onClick={() => handleDeleteClick(row._id)}
+                aria-label="upload picture"
+                component="span"
+                onClick={() => handleDeleteClick(row)}
               >
-                Borrar
-              </Button>
+                <DeleteIcon />
+              </IconButton>
             </TableCell>
           </TableRow>
         ))}

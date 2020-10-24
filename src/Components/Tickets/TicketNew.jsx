@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from "react";
-
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Typography,
   Button,
@@ -18,22 +17,34 @@ import AddIcon from "@material-ui/icons/Add";
 import MovimientoForm from "./MovimientoForm";
 import RetornosTab from "./../Retornos/RetornosTab";
 import DepositosTab from "./../Depositos/DepositosTab";
-import FacturasTab from "../Facturas/FacturasTab";
 import ModalForm from "./../Common/ModalForm";
 import DepositoForm from "./../Depositos/DepositoForm";
-import FacturaForm from "./../Facturas/FacturaForm";
 import RetornoForm from "./../Retornos/RetornoForm";
 import { useDispatch } from "react-redux";
 import {
-  addFactura,
   addDeposito,
   addRetorno,
-  deleteFactura,
   deleteDeposito,
   deleteRetorno,
   startSaveMovimiento,
+  deleteComision,
 } from "../../Redux/Actions/movimientos";
 import moment from "moment";
+import CountUp from "react-countup";
+import { v4 as uuidv4 } from "uuid";
+import ComisionForm from "./ComisionForm";
+import ComisionTab from "./ComisionTab";
+import { addComision } from "./../../Redux/Actions/movimientos";
+import DropZone from "./../Common/DropZone";
+import SolicitudFactura from "./SolicitudFactura";
+import {
+  startAgentes,
+  startSolicitud,
+} from "../../Redux/Actions/agenteCliente";
+import { startClientes } from "./../../Redux/Actions/agenteCliente";
+
+import AlertForm from "./../Common/AlertForm";
+import { movimientoSelector } from "../../Redux/Selectors";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -82,19 +93,18 @@ const TicketNew = () => {
   const classes = useStyles();
   const [activeTab, setActiveTab] = useState(0);
   const [ModalState, setModalState] = useState(false);
+  const [totalMovimiento, setTotalMovimiento] = useState(0);
+  const [totalDepositos, setTotalDepositos] = useState(0);
+  const [totalRetornos, setTotalRetornos] = useState(0);
+  const [totalComisiones, setTotalComisiones] = useState(0);
+  const [selectedTake, setSelectedTake] = useState({});
+  const [alertState, setAlertState] = useState(false);
+
+  const [startCounter, setStartCounter] = useState(0);
   const dispatch = useDispatch();
-  const [factura, setFactura] = useState({
-    _id: 1,
-    rfcFactura: "",
-    clienteFactura: "",
-    empresaFactura: "",
-    conceptoFactura: "",
-    condicionPago: "",
-    formaPago: "",
-    montoFactura: "",
-  });
+
   const [deposito, setDeposito] = useState({
-    _id: 1,
+    _id: uuidv4(),
     bancoDeposito: "",
     depositoMonto: "",
     nombreDeposito: "",
@@ -104,12 +114,25 @@ const TicketNew = () => {
   });
 
   const [retorno, setRetorno] = useState({
-    _id: 1,
+    _id: uuidv4(),
     nombreRetorno: "",
     entidadRetorno: "",
     retornoMonto: "",
     comentarioRetorno: "",
     cuentaRetorno: "",
+    formaRetorno: "",
+    Banco: "",
+    Cuenta_clabe: "",
+    codigoSwift: "",
+    direccionBanco: "",
+  });
+
+  const [comision, setComision] = useState({
+    _id: uuidv4(),
+    Tipo: "",
+    Monto: 0,
+    Comentarios: "",
+    Porcentaje: 0,
   });
 
   const [movimiento, setMovimiento] = useState({
@@ -119,7 +142,21 @@ const TicketNew = () => {
     cantidadTotal: 0,
     comisionAgente: 0,
     comisionOficina: 0,
+    estatusFactura: "Pendiente",
+    estatusRetorno: "Pendiente",
+    estatusDeposito: "Pendiente",
+    totalDepositos: 0,
+    totalRetornos: 0,
+    totalComisiones: 0,
+    solicitudId: null,
+    idAgente: 0,
+    idCliente: 0,
+    Archivo: [],
   });
+
+  const calculartotal = () => {
+    setTotalMovimiento(totalDepositos - totalRetornos - totalComisiones);
+  };
 
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -129,40 +166,33 @@ const TicketNew = () => {
     setModalState(false);
   };
 
+  const handleCountUp = () => {};
+
   const handleSaveAdd = (params) => {
     setModalState(false);
     switch (activeTab) {
       case 0:
-        addFacturaIntab();
-        break;
-      case 1:
         addDepositoIntab();
         break;
-      case 2:
+      case 1:
         addRetornoIntab();
+        break;
+      case 2:
+        addComisionIntab();
         break;
       default:
         break;
     }
   };
 
-  const addFacturaIntab = () => {
-    dispatch(addFactura(factura));
-    setFactura({
-      _id: factura._id + 1,
-      rfcFactura: "",
-      clienteFactura: "",
-      empresaFactura: "",
-      conceptoFactura: "",
-      condicionPago: "",
-      formaPago: "",
-      montoFactura: "",
-    });
-  };
   const addDepositoIntab = () => {
+    setTotalDepositos(
+      parseFloat(totalDepositos) + parseFloat(deposito.depositoMonto)
+    );
+
     dispatch(addDeposito(deposito));
     setDeposito({
-      _id: deposito._id + 1,
+      _id: uuidv4(),
       bancoDeposito: "",
       depositoMonto: "",
       nombreDeposito: "",
@@ -173,9 +203,12 @@ const TicketNew = () => {
   };
 
   const addRetornoIntab = () => {
+    setTotalRetornos(
+      parseFloat(totalRetornos) + parseFloat(retorno.retornoMonto)
+    );
     dispatch(addRetorno(retorno));
     setRetorno({
-      _id: retorno._id + 1,
+      _id: uuidv4(),
       nombreRetorno: "",
       entidadRetorno: "",
       retornoMonto: "",
@@ -183,12 +216,20 @@ const TicketNew = () => {
     });
   };
 
-  const handleOnChangeFacturaForm = (e) => {
-    setFactura({
-      ...factura,
-      [e.target.name]: e.target.value,
+  const addComisionIntab = () => {
+    setTotalComisiones(
+      parseFloat(totalComisiones) + parseFloat(comision.Monto)
+    );
+    dispatch(addComision(comision));
+    setComision({
+      _id: uuidv4(),
+      Monto: 0,
+      Tipo: "",
+      Comentarios: "",
+      porcentaje: 0,
     });
   };
+
   const handleOnChangeDepositoForm = (e) => {
     setDeposito({
       ...deposito,
@@ -209,6 +250,13 @@ const TicketNew = () => {
     });
   };
 
+  const handleOnChangeComisionForm = (e) => {
+    setComision({
+      ...comision,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleDateChange = (date) => {
     setDeposito({
       ...deposito,
@@ -221,16 +269,23 @@ const TicketNew = () => {
     setModalState(true);
   };
 
-  const handleDeleteClick = (_id) => {
+  const handleDeleteClick = (obj) => {
     switch (activeTab) {
       case 0:
-        dispatch(deleteFactura(_id));
+        dispatch(deleteDeposito(obj._id));
+        setTotalDepositos(
+          parseFloat(totalDepositos) - parseFloat(obj.depositoMonto)
+        );
         break;
       case 1:
-        dispatch(deleteDeposito(_id));
+        dispatch(deleteRetorno(obj._id));
+        setTotalRetornos(
+          parseFloat(totalRetornos) - parseFloat(obj.retornoMonto)
+        );
         break;
       case 2:
-        dispatch(deleteRetorno(_id));
+        dispatch(deleteComision(obj.target_id));
+        setTotalComisiones(parseFloat(totalComisiones) - parseFloat(obj.Monto));
         break;
       default:
         break;
@@ -239,6 +294,84 @@ const TicketNew = () => {
 
   const OnSaveMovimiento = () => {
     dispatch(startSaveMovimiento(movimiento));
+  };
+
+  const onCalculoPorcentaje = () => {
+    let resultado = parseFloat(
+      (parseFloat(movimiento.cantidadTotal) / 1.16) *
+        (parseFloat(comision.Porcentaje) / 100)
+    ).toFixed(2);
+
+    setComision({
+      ...comision,
+      Monto: resultado,
+    });
+  };
+
+  const handleFileUpload = (file) => {
+    setMovimiento({
+      ...movimiento,
+      Archivo: file,
+    });
+  };
+
+  useEffect(() => {
+    calculartotal();
+    setMovimiento({
+      ...movimiento,
+      totalDepositos: totalDepositos,
+      totalRetornos: totalRetornos,
+      totalComisiones: totalComisiones,
+    });
+    console.log("Total depositos:", totalDepositos);
+  }, [totalDepositos, totalRetornos, totalComisiones]);
+
+  useEffect(() => {
+    //consultamos con la api la base de datos llamamos startGetTickets
+    const getAgentes = () => dispatch(startAgentes());
+    getAgentes();
+  }, []);
+
+  const OnAgenteChange = (e) => {
+    setMovimiento({
+      ...movimiento,
+      [e.target.name]: e.target.value,
+      idAgente: e.target.value,
+    });
+
+    const agente = {
+      _id: e.target.value,
+    };
+    dispatch(startClientes(agente));
+  };
+
+  const OnClienteChange = (e) => {
+    setMovimiento({
+      ...movimiento,
+      [e.target.name]: e.target.value,
+      idCliente: e.target.value,
+    });
+
+    const cliente = {
+      _id: e.target.value,
+    };
+
+    dispatch(startSolicitud(cliente));
+  };
+
+  const handleTake = () => {
+    setMovimiento({
+      ...movimiento,
+      solicitudId: selectedTake._id,
+    });
+    setAlertState(!alertState);
+    console.log("selected take", selectedTake._id);
+  };
+
+  const toggleTake = (row) => {
+    setSelectedTake(row);
+    setAlertState(!alertState);
+    console.log("toggle take", row);
   };
 
   return (
@@ -256,10 +389,95 @@ const TicketNew = () => {
               Guardar
             </Button>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={4}>
             <Paper className={classes.paper}>
-              <MovimientoForm onChange={handleOnChangeMovimientoForm} />
+              <MovimientoForm
+                onChange={handleOnChangeMovimientoForm}
+                OnAgenteChange={OnAgenteChange}
+                OnClienteChange={OnClienteChange}
+                movimiento={movimiento}
+              />
             </Paper>
+          </Grid>
+          <Grid item xs={8}>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                  <Typography variant="h5" gutterBottom color="textSecondary">
+                    Balance
+                  </Typography>
+                  <Typography variant="h6" gutterBottom color="textPrimary">
+                    <CountUp
+                      start={startCounter}
+                      end={totalMovimiento}
+                      duration={2}
+                      separator=","
+                      decimals={2}
+                      decimal="."
+                      prefix="$ "
+                      onEnd={handleCountUp}
+                    />
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper className={classes.paper}>
+                  <Typography variant="h5" gutterBottom color="textSecondary">
+                    Depositos
+                  </Typography>
+                  <Typography variant="h6" gutterBottom color="textPrimary">
+                    <CountUp
+                      start={startCounter}
+                      end={totalDepositos}
+                      duration={2}
+                      separator=","
+                      decimals={2}
+                      decimal="."
+                      prefix="$ "
+                      onEnd={handleCountUp}
+                    />
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper className={classes.paper}>
+                  <Typography variant="h5" gutterBottom color="textSecondary">
+                    Retornos
+                  </Typography>
+                  <Typography variant="h6" gutterBottom color="textPrimary">
+                    <CountUp
+                      start={startCounter}
+                      end={totalRetornos}
+                      duration={2}
+                      separator=","
+                      decimals={2}
+                      decimal="."
+                      prefix="$ "
+                      onEnd={handleCountUp}
+                    />
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper className={classes.paper}>
+                  <Typography variant="h5" gutterBottom color="textSecondary">
+                    Comisiones
+                  </Typography>
+                  <Typography variant="h6" gutterBottom color="textPrimary">
+                    <CountUp
+                      start={startCounter}
+                      end={totalComisiones}
+                      duration={2}
+                      separator=","
+                      decimals={2}
+                      decimal="."
+                      prefix="$ "
+                      onEnd={handleCountUp}
+                    />
+                  </Typography>
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={11}>
             <Tabs
@@ -269,10 +487,11 @@ const TicketNew = () => {
               value={activeTab}
               onChange={handleChange}
             >
-              <Tab label="Facturas" />
               <Tab label="Depositos" />
               <Tab label="Retornos" />
               <Tab label="Comisiones" />
+              <Tab label="Archivo" />
+              <Tab label="Facturas" />
             </Tabs>
           </Grid>
           <Grid item xs={1}>
@@ -283,24 +502,27 @@ const TicketNew = () => {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <TabPanel value={activeTab} index={0}>
-                <FacturasTab
-                  handleDeleteClick={(id) => handleDeleteClick(id)}
+                <DepositosTab
+                  handleDeleteClick={(obj) => handleDeleteClick(obj)}
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
-                <DepositosTab
-                  handleDeleteClick={(id) => handleDeleteClick(id)}
+                <RetornosTab
+                  handleDeleteClick={(obj) => handleDeleteClick(obj)}
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={2}>
-                <RetornosTab
-                  handleDeleteClick={(id) => handleDeleteClick(id)}
+                <ComisionTab
+                  handleDeleteClick={(obj) => handleDeleteClick(obj)}
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={3}>
-                <RetornosTab
-                  handleDeleteClick={(id) => handleDeleteClick(id)}
-                />
+                <DropZone onChange={(file) => handleFileUpload(file)} />
+              </TabPanel>
+
+              <TabPanel value={activeTab} index={4}>
+                <h4>Solicitud de facturas pendientes</h4>
+                <SolicitudFactura handleChecked={(obj) => toggleTake(obj)} />
               </TabPanel>
             </Paper>
           </Grid>
@@ -313,22 +535,37 @@ const TicketNew = () => {
         >
           <Paper className={classes.paperModal}>
             {activeTab === 0 ? (
-              <FacturaForm handleOnChange={handleOnChangeFacturaForm} />
-            ) : activeTab === 1 ? (
               <DepositoForm
                 handleOnChange={handleOnChangeDepositoForm}
                 handleDateChange={handleDateChange}
                 selectedDate={deposito.fechaDeposito}
               />
+            ) : activeTab === 1 ? (
+              <RetornoForm
+                handleOnChange={handleOnChangeRetornoForm}
+                data={retorno}
+              />
             ) : activeTab === 2 ? (
-              <RetornoForm handleOnChange={handleOnChangeRetornoForm} />
+              <ComisionForm
+                handleOnChange={handleOnChangeComisionForm}
+                onCalculoPorcentaje={onCalculoPorcentaje}
+                comision={comision}
+              />
             ) : activeTab === 3 ? (
-              <RetornoForm handleOnChange={handleOnChangeRetornoForm} />
+              <div></div>
             ) : (
               <div></div>
             )}
           </Paper>
         </ModalForm>
+        <AlertForm
+          alertState={alertState}
+          handleClose={(obj) => toggleTake(obj)}
+          handleTake={handleTake}
+          title={"Enlace facturación"}
+        >
+          {"Deseas asignar la solicitud de factura al movimiento?"}
+        </AlertForm>
       </Container>
     </Fragment>
   );

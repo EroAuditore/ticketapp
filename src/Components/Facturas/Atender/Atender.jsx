@@ -40,8 +40,6 @@ const Atender = () => {
   const dispatch = useDispatch();
 
   const hanldeClick = (item) => {
-    console.log("atenderClick:", item);
-
     setFactura({
       ...factura,
       _id: item._id,

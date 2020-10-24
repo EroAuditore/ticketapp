@@ -21,8 +21,10 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
 import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import SettingsIcon from "@material-ui/icons/Settings";
 import DescriptionIcon from "@material-ui/icons/Description";
+import PeopleIcon from "@material-ui/icons/People";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
@@ -148,26 +150,6 @@ const Layout = ({ children, history }) => {
                 Sistema de tickets
               </Typography>
               <div className={classes.grow} />
-              <div className={classes.sectionDesktop}>
-                <IconButton
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                >
-                  <Badge badgeContent={17} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-              </div>
             </Toolbar>
           </AppBar>
         )}
@@ -205,7 +187,7 @@ const Layout = ({ children, history }) => {
               <ListItemText primary="Movimientos" />
             </ListItem>
 
-            <ListItem
+            {/*<ListItem
               button
               selected={selectedIndex === 1}
               onClick={(event) => handleListItemClick(event, 1)}
@@ -216,9 +198,9 @@ const Layout = ({ children, history }) => {
                 <InboxIcon />
               </ListItemIcon>
               <ListItemText primary="Depositos" />
-            </ListItem>
+            </ListItem>*/}
 
-            <ListItem
+            {/*<ListItem
               button
               selected={selectedIndex === 2}
               onClick={(event) => handleListItemClick(event, 2)}
@@ -229,7 +211,7 @@ const Layout = ({ children, history }) => {
                 <SettingsBackupRestoreIcon />
               </ListItemIcon>
               <ListItemText primary="Retornos" />
-            </ListItem>
+            </ListItem> */}
 
             <ListItem
               button
@@ -239,15 +221,15 @@ const Layout = ({ children, history }) => {
               to="/facturas/solicitud"
             >
               <ListItemIcon>
-                <DescriptionIcon />
+                <SettingsBackupRestoreIcon />
               </ListItemIcon>
               <ListItemText primary="Solicitud Factura" />
             </ListItem>
 
             <ListItem
               button
-              selected={selectedIndex === 3}
-              onClick={(event) => handleListItemClick(event, 3)}
+              selected={selectedIndex === 4}
+              onClick={(event) => handleListItemClick(event, 4)}
               component={Link}
               to="/facturas"
             >
@@ -259,8 +241,8 @@ const Layout = ({ children, history }) => {
             <Divider />
             <ListItem
               button
-              selected={selectedIndex === 4}
-              onClick={(event) => handleListItemClick(event, 4)}
+              selected={selectedIndex === 5}
+              onClick={(event) => handleListItemClick(event, 5)}
               component={Link}
               to="/settings"
             >
@@ -271,6 +253,32 @@ const Layout = ({ children, history }) => {
             </ListItem>
           </List>
           <Divider />
+
+          <ListItem
+            button
+            selected={selectedIndex === 6}
+            onClick={(event) => handleListItemClick(event, 6)}
+            component={Link}
+            to="/agentes"
+          >
+            <ListItemIcon>
+              <AssignmentIndIcon />
+            </ListItemIcon>
+            <ListItemText primary="Agentes" />
+          </ListItem>
+
+          <ListItem
+            button
+            selected={selectedIndex === 7}
+            onClick={(event) => handleListItemClick(event, 7)}
+            component={Link}
+            to="/clientes"
+          >
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Clientes" />
+          </ListItem>
         </Drawer>
         <main
           className={clsx(classes.content, {

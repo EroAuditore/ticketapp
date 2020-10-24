@@ -6,35 +6,24 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import { Chip } from "@material-ui/core";
+import NumberFormat from "react-number-format";
+import MovimientoEstatus from "./../Common/MovimientoEstatus";
 
-const TableList = ({ data, toggleDrawer }) => {
+const TableList = ({ data, toggleTake }) => {
   if (!data) return <div></div>;
 
-  const renderCell = (item) => {
-    return (
-      <Chip
-        variant="outlined"
-        size="small"
-        label="peding"
-        style={{
-          border: "1px solid rgb(251, 140, 0)",
-          color: "rgb(251, 140, 0)",
-        }}
-      />
-    );
-  };
   return (
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell>No.</TableCell>
-          <TableCell align="left">Solicitante</TableCell>
+          <TableCell>#</TableCell>
+
           <TableCell align="left">Agente</TableCell>
           <TableCell align="left">Cliente</TableCell>
-          <TableCell align="left">Total</TableCell>
-          <TableCell align="left">Comision Oficina</TableCell>
-          <TableCell align="left">Comision Agente</TableCell>
-          <TableCell align="left">Estatus</TableCell>
+          <TableCell align="left">Cantidad Total</TableCell>
+          <TableCell align="left">Deposito</TableCell>
+          <TableCell align="left">Retorno</TableCell>
+          <TableCell align="left">Comision</TableCell>
           <TableCell align="left"></TableCell>
         </TableRow>
       </TableHead>
@@ -44,19 +33,31 @@ const TableList = ({ data, toggleDrawer }) => {
             <TableCell component="th" scope="row">
               {row._id}
             </TableCell>
-            <TableCell align="left">{row.nombre}</TableCell>
-            <TableCell align="left">{row.agente}</TableCell>
-            <TableCell align="left">{row.cliente}</TableCell>
-            <TableCell align="left">{row.CantidadTotal}</TableCell>
-            <TableCell align="left">{row.ComisionAgente}</TableCell>
-            <TableCell align="left">{row.ComisionOficina}</TableCell>
-            <TableCell align="left">{renderCell(row.Estatus)}</TableCell>
+            <TableCell align="left">{row.Agente}</TableCell>
+            <TableCell align="left">{row.Cliente}</TableCell>
+            <TableCell align="left">
+              <NumberFormat
+                value={row.cantidadTotal}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+              />
+            </TableCell>
+            <TableCell align="left">
+              <MovimientoEstatus data={row.estatusDeposito} />
+            </TableCell>
+            <TableCell align="left">
+              <MovimientoEstatus data={row.estatusRetorno} />
+            </TableCell>
+            <TableCell align="left">
+              <MovimientoEstatus data={row.estatusComision} />
+            </TableCell>
             <TableCell align="left">
               <Button
                 variant="outlined"
                 size="small"
                 color="primary"
-                onClick={toggleDrawer}
+                onClick={() => toggleTake(row)}
               >
                 Validar
               </Button>

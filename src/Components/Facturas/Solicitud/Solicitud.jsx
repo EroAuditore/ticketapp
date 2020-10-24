@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Button,
@@ -13,11 +13,20 @@ import {
 } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
-import { startEditFactura } from "../../../Redux/Actions/facturas";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  startEditFactura,
+  startGetSolicitudes,
+  startAttendFacturas,
+  nuevaSolicitud,
+} from "../../../Redux/Actions/facturas";
 import CustomTextBox from "./../../Common/CustomTextBox";
 import { useHistory } from "react-router-dom";
 import TableList from "./TableList";
+import { solicitudesSelector } from "../../../Redux/Selectors";
+
+import AlertForm from "./../../Common/AlertForm";
+import jwtDecode from "jwt-decode";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -40,8 +49,10 @@ const useStyles = makeStyles((theme) => ({
 const Solicitud = () => {
   const classes = useStyles();
   const history = useHistory();
-  /*const data = useSelector((state) => ticketsResult(state));*/
-  const data = [];
+  const dispatch = useDispatch();
+  const data = useSelector((state) => solicitudesSelector(state));
+  const [selectedTake, setSelectedTake] = useState({});
+  const [alertState, setAlertState] = useState(false);
 
   const [filterText, setFilterText] = useState("");
   const handleFilterClick = () => {
@@ -53,12 +64,32 @@ const Solicitud = () => {
   };
 
   const handleAdd = () => {
+    dispatch(nuevaSolicitud());
     history.push("/facturas/solicitud/nueva");
   };
 
-  const toggleDrawer = () => {
-    /*setdrawerState(!drawerState);*/
+  const handleTake = () => {
+    const jwt = localStorage.getItem("token");
+    const { data: userData } = jwtDecode(jwt);
+    selectedTake.ID_usuario = userData.ID_usuario;
+    dispatch(startAttendFacturas(selectedTake));
+    setAlertState(!alertState);
   };
+
+  const selectedTakeObj = (obj) => {
+    console.log("Selected obj", obj);
+    setSelectedTake(obj);
+    setAlertState(!alertState);
+  };
+  const toggleTake = () => {
+    setAlertState(!alertState);
+  };
+
+  useEffect(() => {
+    //consultamos con la api la base de datos llamamos startGetTickets
+    const getData = () => dispatch(startGetSolicitudes());
+    getData();
+  }, []);
 
   return (
     <React.Fragment>
@@ -91,10 +122,21 @@ const Solicitud = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
-              <TableList data={data} toggleDrawer={toggleDrawer} />
+              <TableList
+                data={data}
+                selectedTakeObj={(obj) => selectedTakeObj(obj)}
+              />
             </TableContainer>
           </Grid>
         </Grid>
+        <AlertForm
+          alertState={alertState}
+          handleClose={toggleTake}
+          handleTake={handleTake}
+          title={"Solcitud Factura"}
+        >
+          {"Deseas tomar la solicitud de factura?"}
+        </AlertForm>
       </Container>
     </React.Fragment>
   );

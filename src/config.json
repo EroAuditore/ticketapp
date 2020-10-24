@@ -1,3 +1,4 @@
 {
-  "apiUrl": "http://localhost:8080/ticketapi/api"
+  "apiUrl": "http://localhost:8080/ticketapi/api",
+  "filesUrl": "http://localhost:8080/filemanager/filedonwload.php?id="
 }

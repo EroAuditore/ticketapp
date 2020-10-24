@@ -16,10 +16,12 @@ const AlertTomar = ({ alertState, handleClose, handleTake }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Tomar movimiento"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {"Solicitud de factura"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Deseas tomar el movimiento, una ves que que aceptes solamente tu
+            Deseas tomar la solicitud, una ves que que aceptes solamente tu
             usuario podra atenderlo?.
           </DialogContentText>
         </DialogContent>

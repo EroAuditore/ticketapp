@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -50,7 +50,7 @@ const ModalForm = (props) => {
             Detalle
           </Typography>
           <Button autoFocus color="inherit" onClick={props.handleSaveAdd}>
-            save
+            Guardar
           </Button>
         </Toolbar>
       </AppBar>
