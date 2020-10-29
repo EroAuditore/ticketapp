@@ -25,7 +25,7 @@ const AlertTomar = ({ alertState, handleClose, handleTake }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            No
+            Cancelar
           </Button>
           <Button onClick={handleTake} color="primary" autoFocus>
             Ok

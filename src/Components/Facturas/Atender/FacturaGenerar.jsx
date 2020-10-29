@@ -145,7 +145,7 @@ const FacturaGenerar = () => {
             <Grid container spacing={2}>
               <Grid item md={6}>
                 <Card>
-                  <CardHeader title="Datos facturacion" />
+                  <CardHeader title="Información capturada" />
                   <CardContent>
                     <FacturaGenView />
                   </CardContent>
@@ -165,7 +165,7 @@ const FacturaGenerar = () => {
               </Grid>
               <Grid item md={5}>
                 <Card>
-                  <CardHeader title="Factura XML" />
+                  <CardHeader title="Datos XML" />
                   <CardContent>
                     <FacturaTempView />
                   </CardContent>

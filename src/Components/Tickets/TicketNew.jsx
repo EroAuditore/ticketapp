@@ -490,7 +490,7 @@ const TicketNew = () => {
               <Tab label="Depositos" />
               <Tab label="Retornos" />
               <Tab label="Comisiones" />
-              <Tab label="Archivo" />
+              <Tab label="Adjunto" />
               <Tab label="Facturas" />
             </Tabs>
           </Grid>
