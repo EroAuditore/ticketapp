@@ -7,7 +7,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-const AlertTomar = ({ alertState, handleClose, handleTake }) => {
+const AlertFormInfo = ({
+  title,
+  alertState,
+  handleClose,
+  handleTake,
+  children,
+}) => {
   return (
     <React.Fragment>
       <Dialog
@@ -16,21 +22,16 @@ const AlertTomar = ({ alertState, handleClose, handleTake }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Solicitud de factura"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Deseas tomar la solicitud, una ves que que aceptes solamente tu
-            usuario podra atenderlo?.
+            {children}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="contained">
-            CANCELAR
-          </Button>
+          
           <Button onClick={handleTake} color="primary" variant="contained" autoFocus>
-            OK
+            Ok
           </Button>
         </DialogActions>
       </Dialog>
@@ -38,4 +39,4 @@ const AlertTomar = ({ alertState, handleClose, handleTake }) => {
   );
 };
 
-export default AlertTomar;
+export default AlertFormInfo;

@@ -17,6 +17,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import { makeStyles } from "@material-ui/core/styles";
 import { DropzoneDialog } from "material-ui-dropzone";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import FacturaGenView from "./FacturaGenView";
 import {
   startUploadXML,
@@ -34,6 +35,7 @@ import MovimientoFormView from "./MovimientoFormView";
 import FacturaTempView from "./FacturaTempView";
 import { processSelector } from "./../../../Redux/Selectors/index";
 import FilesFactura from "./FilesFactura";
+import AlertFormInfo from "../../Common/AlertFormInfo";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -67,6 +69,7 @@ const FacturaGenerar = () => {
   const [openPDF, setOpenPDF] = React.useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [alertState, setAlertState] = useState(false);
+  const [confirmState, setConfirmState] = useState(false);
 
   const data = useSelector((state) => facturaGenSelector(state));
   const { idMovimiento } = data;
@@ -82,14 +85,13 @@ const FacturaGenerar = () => {
   };
 
   useEffect(() => {
-    console.log("lenght", xml.length);
-    /*console.log( ( &&xml));*/
+    //Cuando cambie el XMl se manda por ws y trae el XML
     if (xml.length > 0) dispatch(startVXML({ ...factura, Archivo: xml }));
   }, [xml]);
 
   useEffect(() => {
     console.log("lenght", pdf.length);
-    /*console.log( ( &&xml));*/
+    
     if (pdf.length > 0) dispatch(startUploadPDF({ ...factura, Archivo: pdf }));
   }, [pdf]);
 
@@ -108,10 +110,17 @@ const FacturaGenerar = () => {
   };
 
   const doUploadXML = () => {
-    if (xml.length > 0) dispatch(startUploadXML({ ...factura, Archivo: xml }));
+    //subimos el XML a la nube
+    if (xml.length > 0) 
+      dispatch(startUploadXML({ ...factura, Archivo: xml }));
   };
 
+  const saveXML = () =>{
+   
+  }
+
   const processState = useSelector((state) => processSelector(state));
+
   const handleProcess = () => {
     dispatch(startProcess());
   };
@@ -137,7 +146,7 @@ const FacturaGenerar = () => {
           >
             <Tab label="Factura" />
             <Tab label="Movimiento" />
-            <Tab label="Archivo" />
+            <Tab label="Adjunto" />
           </Tabs>
         </Grid>
         <Grid item xs={12}>
@@ -174,7 +183,7 @@ const FacturaGenerar = () => {
                       variant="contained"
                       color="default"
                       className={classes.button}
-                      startIcon={<CloudUploadIcon />}
+                      startIcon={<SaveAltIcon />}
                       onClick={() => doUploadXML()}
                       size="small"
                     >
@@ -184,7 +193,7 @@ const FacturaGenerar = () => {
                       variant="contained"
                       color="default"
                       className={classes.button}
-                      startIcon={<CloudUploadIcon />}
+                      startIcon={<SaveAltIcon />}
                       onClick={() => OnUploadPDF()}
                       size="small"
                     >
@@ -221,13 +230,12 @@ const FacturaGenerar = () => {
       <DropzoneDialog
         acceptedFiles={[".xml"]}
         cancelButtonText={"cancelar"}
-        submitButtonText={"subir XML"}
+        submitButtonText={"Subir XML"}
         filesLimit={1}
         maxFileSize={5000000}
         open={openFile}
         onClose={() => setOpenFile(false)}
         onSave={(files) => {
-          console.log("Files:", files);
           setXml(files);
           setOpenFile(false);
         }}
@@ -262,13 +270,23 @@ const FacturaGenerar = () => {
       </AlertForm>
 
       <AlertForm
+        alertState={alertState}
+        handleClose={toggleTake}
+        handleTake={handleTake}
+        title={"Guardar XML"}
+      >
+        {"Deseas guardar el XML, se reemplazaran los datos capturados?"}
+      </AlertForm>
+
+
+      <AlertFormInfo
         alertState={processState}
         handleClose={handleProcess}
         handleTake={handleProcess}
-        title={"Documento guardado"}
+        title={"Acción realizada"}
       >
-        {"Se ha guardado el documento"}
-      </AlertForm>
+        {"Documento cargado exitosamente"}
+      </AlertFormInfo>
     </React.Fragment>
   );
 };

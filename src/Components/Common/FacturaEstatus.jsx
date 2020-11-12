@@ -7,28 +7,33 @@ const FacturaEstatus = ({ data }) => {
   let renderClass = "";
   switch (data) {
     case "0": {
-      renderText = "Pendiente";
+      renderText = "SOLICITADA";
       renderClass = "badge badge-secondary";
       break;
     }
     case "1": {
-      renderText = "Atendiendo";
+      renderText = "EN PROCESO";
       renderClass = "badge badge-warning";
       break;
     }
     case "2": {
-      renderText = "Generada";
+      renderText = "EMITIDA";
       renderClass = "badge badge-success";
       break;
     }
-    case "3": {
-      renderText = "Cancelada";
-      renderClass = "badge badge-danger";
+    case "generado": {
+      renderText = "PAGADA";
+      renderClass = "badge badge-success";
       break;
     }
 
+    case "4": {
+      renderText = "CANCELADA";
+      renderClass = "badge badge-danger";
+      break;
+    }
     default: {
-      renderText = "Pendiente";
+      renderText = "PENDIENTE";
       renderClass = "badge badge-secondary";
       break;
     }

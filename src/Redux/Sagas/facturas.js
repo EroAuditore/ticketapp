@@ -170,15 +170,15 @@ export function* filterSolicitud({ payload }) {
     );
 
     yield put({ type: SUCCESS_FILTER_SOLICITUDES, result });
-    console.log("success", result);
+    
   } catch (error) {
-    console.log("Error", error);
+  
     yield put({ type: ERROR_FILTER_SOLICITUDES });
   }
 }
 
 export function* uploadFacturaXML({ payload }) {
-  console.log("upload factura saga", payload);
+  
 
   const data = new FormData();
   data.append("file", payload.Archivo[0]);
@@ -189,15 +189,14 @@ export function* uploadFacturaXML({ payload }) {
   data.append("solicitudObj", json);
   try {
     const result = yield call(apiCall, "/factura/xml", data, null, "POST");
-    yield put({ type: SUCCESS_UPLOAD_XML, result });
-    /*yield call(redirectTo, "/facturas/solicitud");*/
+    yield put({ type: SUCCESS_UPLOAD_XML, result });   
   } catch (error) {
     yield put({ type: ERROR_UPLOAD_XML, error });
   }
 }
 
 export function* uploadVXML({ payload }) {
-  console.log("upload factura VXML SAGA", payload);
+  
 
   const data = new FormData();
   data.append("file", payload.Archivo[0]);

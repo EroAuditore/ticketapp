@@ -9,45 +9,8 @@ import FacturaEstatus from "./../Common/FacturaEstatus";
 
 const TableList = ({ data, toggleTake }) => {
   if (!data) return <div></div>;
-
-  const renderCell = (item) => {
-    let renderText = "";
-    let renderClass = "";
-    switch (item) {
-      case "1": {
-        renderText = "Pendiente";
-        renderClass = "badge badge-secondary";
-        break;
-      }
-      case "2": {
-        renderText = "Atendiendo";
-        renderClass = "badge badge-warning";
-        break;
-      }
-      case "3": {
-        renderText = "Finalizado";
-        renderClass = "badge badge-success";
-        break;
-      }
-
-      default: {
-        renderText = "Pendiente";
-        renderClass = "badge badge-secondary";
-        break;
-      }
-    }
-    /*
-    const renderClass =
-      item == "1" ? "badge badge-success" : "badge badge-secondary";
-    const renderText = item == "1" ? "Activo" : "Inactivo"; */
-
-    return (
-      <h6>
-        <span className={renderClass}>{renderText}</span>
-      </h6>
-    );
-  };
-
+ 
+  
   return (
     <Table aria-label="simple table">
       <TableHead>
@@ -58,7 +21,8 @@ const TableList = ({ data, toggleTake }) => {
           <TableCell align="left">Cliente</TableCell>
           <TableCell align="left">RFC</TableCell>
           <TableCell align="left">Usuario</TableCell>
-          <TableCell align="left">Estatus</TableCell>
+          <TableCell align="left">Estatus factura</TableCell>
+          <TableCell align="left">Estatus Pago</TableCell>
           <TableCell align="left"></TableCell>
         </TableRow>
       </TableHead>
@@ -76,8 +40,11 @@ const TableList = ({ data, toggleTake }) => {
               <FacturaEstatus data={row.estatus} />
             </TableCell>
             <TableCell align="left">
+              <FacturaEstatus data={row.estatusDeposito} />
+            </TableCell>
+            <TableCell align="left">
               <Button
-                variant="outlined"
+                variant="contained"
                 size="small"
                 color="primary"
                 onClick={() => toggleTake(row)}

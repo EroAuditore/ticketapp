@@ -20,7 +20,7 @@ const DialogBox = (props) => {
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          No
+          Cancelar
         </Button>
         <Button onClick={handleOk} color="primary" autoFocus>
           Ok

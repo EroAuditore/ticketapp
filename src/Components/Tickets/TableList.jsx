@@ -54,7 +54,8 @@ const TableList = ({ data, toggleTake }) => {
             </TableCell>
             <TableCell align="left">
               <Button
-                variant="outlined"
+                
+                variant="contained"
                 size="small"
                 color="primary"
                 onClick={() => toggleTake(row)}

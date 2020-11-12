@@ -7,14 +7,14 @@ const MovimientoEstatus = ({ data }) => {
   let renderClass = "";
   switch (data) {
     case "pendiente": {
-      renderText = "Pendiente";
+      renderText = "POR REVISAR";
       renderClass = "badge badge-secondary";
       break;
     }
 
     case "generado":
     case "depositado": {
-      renderText = "Generado";
+      renderText = "GENERADO";
       renderClass = "badge badge-success";
       break;
     }
@@ -31,7 +31,7 @@ const MovimientoEstatus = ({ data }) => {
     }
 
     default: {
-      renderText = "Pendiente";
+      renderText = "POR REVISAR";
       renderClass = "badge badge-secondary";
       break;
     }

@@ -1,5 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
+/*
 const theme = createMuiTheme({
   palette: {
     type: "dark",
@@ -8,7 +9,13 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: "#eceff1",
-    },*/
+    },*//*
+  },
+});
+*/
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
   },
 });
 

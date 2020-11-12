@@ -36,7 +36,7 @@ const FilesMovimiento = ({ handleDownloadClick }) => {
                 color="primary"
                 onClick={() => handleDownloadClick(row)}
               >
-                Descargar
+                DESCARGAR
               </Button>
             </TableCell>
           </TableRow>

@@ -459,7 +459,7 @@ const TicketAtencion = () => {
               <Tab label="Depositos" />
               <Tab label="Retornos" />
               <Tab label="Comisiones" />
-              <Tab label="Archivo" />
+              <Tab label="Adjunto" />
             </Tabs>
           </Grid>
 

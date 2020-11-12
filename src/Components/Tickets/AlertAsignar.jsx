@@ -19,12 +19,12 @@ const AlertAsignar = ({ alertState, handleClose, handleTake }) => {
         <DialogTitle id="alert-dialog-title">{"Tomar movimiento"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Deseas asginar la solicitud de facturacion al moviiento?
+            Deseas asginar la solicitud de facturacion al movimiento?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancelar
+            CANCELAR
           </Button>
           <Button onClick={handleTake} color="primary" autoFocus>
             Ok

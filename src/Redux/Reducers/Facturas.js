@@ -207,9 +207,10 @@ const facturasReducer = (state = initialState, action) => {
       return {
         ...state,
         factura: { ...state.factura, estatus: "2" },
-        facturas: state.facturas.map((factura) =>
-          factura._id === data[0]._id ? (factura = data[0]) : factura
-        ),
+        facturas: state.facturas.map((factura) =>{
+          if(factura._id === data[0]._id) { console.log("factura:", factura)}
+          return factura._id === data[0]._id ? (factura = data[0]) : factura
+        }),
         successProcess: true,
       };
 
@@ -230,6 +231,7 @@ const facturasReducer = (state = initialState, action) => {
     case START_GEN_FACTURA:
       return {
         ...state,
+        facturaTemp:{}
       };
     case SUCCESS_GEN_FACTURA:
       return {
@@ -288,7 +290,7 @@ const facturasReducer = (state = initialState, action) => {
         successProcess: false,
       };
     case SUCCESS_VXML:
-      console.log(action.result.data);
+      
       return {
         ...state,
         facturaTemp: action.result.data,
