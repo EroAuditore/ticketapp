@@ -20,7 +20,7 @@ const DepositosTab = (props) => {
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell align="left">Fecha</TableCell>
+          <TableCell align="left">Fechas</TableCell>
           <TableCell align="left">Nombre</TableCell>
           <TableCell align="left">Monto</TableCell>
           <TableCell align="left">Banco</TableCell>

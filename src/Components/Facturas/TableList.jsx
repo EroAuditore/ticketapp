@@ -6,10 +6,10 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import FacturaEstatus from "./../Common/FacturaEstatus";
+import Moment from 'react-moment';
 
 const TableList = ({ data, toggleTake }) => {
   if (!data) return <div></div>;
- 
   
   return (
     <Table aria-label="simple table">
@@ -20,6 +20,7 @@ const TableList = ({ data, toggleTake }) => {
           <TableCell align="left">Agente</TableCell>
           <TableCell align="left">Cliente</TableCell>
           <TableCell align="left">RFC</TableCell>
+          <TableCell align="left">Fecha</TableCell>
           <TableCell align="left">Usuario</TableCell>
           <TableCell align="left">Estatus factura</TableCell>
           <TableCell align="left">Estatus Pago</TableCell>
@@ -35,6 +36,11 @@ const TableList = ({ data, toggleTake }) => {
             <TableCell align="left">{row.Agente}</TableCell>
             <TableCell align="left">{row.cliente}</TableCell>
             <TableCell align="left">{row.RFC}</TableCell>
+            <TableCell align="left">
+              <Moment format="YYYY/MM/DD">
+                  {row.fecha}
+              </Moment>
+            </TableCell>
             <TableCell align="left">{row.userName}</TableCell>
             <TableCell align="left">
               <FacturaEstatus data={row.estatus} />

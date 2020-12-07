@@ -13,7 +13,7 @@ import { solicitudSelector } from "../../Redux/Selectors";
 import { useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
 
-const SolicitudFactura = ({ handleChecked }) => {
+const SolicitudFactura = ({ handleFacturas }) => {
   const renderCell = (item) => {
     let renderText = "";
     let renderClass = "";
@@ -89,9 +89,9 @@ const SolicitudFactura = ({ handleChecked }) => {
               <TableCell align="left">
                 <IconButton
                   color="primary"
-                  aria-label="upload picture"
+                 
                   component="span"
-                  onClick={() => handleChecked(row)}
+                  onClick={() => handleFacturas(row)}
                 >
                   <ArrowForwardIcon />
                 </IconButton>

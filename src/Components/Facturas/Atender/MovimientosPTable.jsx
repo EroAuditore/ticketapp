@@ -9,33 +9,27 @@ import { Chip } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import { useDispatch, useSelector } from "react-redux";
 import { movimientosPSelector } from "../../../Redux/Selectors";
+import MovimientoEstatus from './../../Common/MovimientoEstatus';
+import Moment from 'react-moment';
 
 const MovimientosPTable = ({ toggleTake }) => {
-  const renderCell = (item) => {
-    return (
-      <Chip
-        variant="outlined"
-        size="small"
-        label="peding"
-        style={{
-          border: "1px solid rgb(251, 140, 0)",
-          color: "rgb(251, 140, 0)",
-        }}
-      />
-    );
-  };
 
   const data = useSelector((state) => movimientosPSelector(state));
+
 
   return (
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
           <TableCell>#</TableCell>
+
           <TableCell align="left">Agente</TableCell>
           <TableCell align="left">Cliente</TableCell>
+          <TableCell align="left">Fecha</TableCell>
           <TableCell align="left">Cantidad Total</TableCell>
-          <TableCell align="left">Estatus</TableCell>
+          <TableCell align="left">Deposito</TableCell>
+          <TableCell align="left">Retorno</TableCell>
+          <TableCell align="left">Comision</TableCell>
           <TableCell align="left"></TableCell>
         </TableRow>
       </TableHead>
@@ -48,6 +42,12 @@ const MovimientosPTable = ({ toggleTake }) => {
             <TableCell align="left">{row.Agente}</TableCell>
             <TableCell align="left">{row.Cliente}</TableCell>
             <TableCell align="left">
+
+              <Moment format="YYYY/MM/DD">
+                {row.fecha}
+              </Moment>
+            </TableCell>
+            <TableCell align="left">
               <NumberFormat
                 value={row.cantidadTotal}
                 displayType={"text"}
@@ -55,13 +55,22 @@ const MovimientosPTable = ({ toggleTake }) => {
                 prefix={"$"}
               />
             </TableCell>
-            <TableCell align="left">{renderCell(row.Estatus)}</TableCell>
+            <TableCell align="left">
+              <MovimientoEstatus data={row.estatusDeposito} />
+            </TableCell>
+            <TableCell align="left">
+              <MovimientoEstatus data={row.estatusRetorno} />
+            </TableCell>
+            <TableCell align="left">
+              <MovimientoEstatus data={row.estatusComision} />
+            </TableCell>
             <TableCell align="left">
               <Button
-                variant="outlined"
+
+                variant="contained"
                 size="small"
                 color="primary"
-                onClick={() => toggleTake(row)}
+              /*onClick={() => toggleTake(row)}*/
               >
                 Asignar
               </Button>

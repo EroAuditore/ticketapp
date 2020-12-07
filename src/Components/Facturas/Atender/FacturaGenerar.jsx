@@ -69,7 +69,7 @@ const FacturaGenerar = () => {
   const [openPDF, setOpenPDF] = React.useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [alertState, setAlertState] = useState(false);
-  const [confirmState, setConfirmState] = useState(false);
+  const [alertStateAM, setAlertStateAM] = useState(false);
 
   const data = useSelector((state) => facturaGenSelector(state));
   const { idMovimiento } = data;
@@ -91,7 +91,7 @@ const FacturaGenerar = () => {
 
   useEffect(() => {
     console.log("lenght", pdf.length);
-    
+
     if (pdf.length > 0) dispatch(startUploadPDF({ ...factura, Archivo: pdf }));
   }, [pdf]);
 
@@ -101,22 +101,22 @@ const FacturaGenerar = () => {
 
   const handleTake = () => {
     dispatch(startAFAM(movimiento));
-    setAlertState(!alertState);
+    setAlertState(!alertStateAM);
   };
 
   const toggleTake = (row) => {
     setMovimiento(row);
-    setAlertState(!alertState);
+    setAlertStateAM(!alertStateAM);
   };
 
   const doUploadXML = () => {
     //subimos el XML a la nube
-    if (xml.length > 0) 
+    if (xml.length > 0)
       dispatch(startUploadXML({ ...factura, Archivo: xml }));
   };
 
-  const saveXML = () =>{
-   
+  const saveXML = () => {
+
   }
 
   const processState = useSelector((state) => processSelector(state));
@@ -261,7 +261,7 @@ const FacturaGenerar = () => {
       />
 
       <AlertForm
-        alertState={alertState}
+        alertState={alertStateAM}
         handleClose={toggleTake}
         handleTake={handleTake}
         title={"Asignar movmiento"}

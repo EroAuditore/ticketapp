@@ -25,6 +25,42 @@ export const ERROR_VM = "ERROR_VM";
 export const START_PROCESS = "START_PROCESS";
 export const END_PROCESS = "END_PROCESS";
 
+
+/*************** FACTURAS DE UNA SOLICITUD DE UN CLIENTE*************************/
+
+export const START_FSC = "START_FSC";
+export const SUCCESS_FSC = "SUCCESS_FSC";
+export const ERROR_FSC = "ERROR_FSC";
+
+
+export const startFSC = (payload) => {
+  return {
+    type: START_FSC,
+    payload,
+  };
+};
+
+export const successFSC = (payload) => {
+  return {
+    type: SUCCESS_FSC,
+    payload,
+  };
+};
+
+
+/************************ END FSC  ************************************* */
+
+export const errorFSC = (payload) => {
+  return {
+    type: ERROR_FSC,
+    payload,
+  };
+};
+
+
+
+
+
 export const addFactura = (payload) => {
   return {
     type: ADD_FACTURA,

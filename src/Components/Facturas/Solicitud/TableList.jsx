@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import IconButton from "@material-ui/core/IconButton";
 import NumberFormat from "react-number-format";
+import Moment from 'react-moment';
 
 const TableList = ({ data, selectedTakeObj }) => {
   if (!data) return <div></div>;
@@ -54,6 +55,7 @@ const TableList = ({ data, selectedTakeObj }) => {
           <TableCell align="left">Agente</TableCell>
           <TableCell align="left">Cliente</TableCell>
           <TableCell align="left">Monto</TableCell>
+          <TableCell align="left">Fecha</TableCell>
           <TableCell align="left">Creado por</TableCell>
           <TableCell align="left">Atendido por</TableCell>
           <TableCell align="left">Estatus</TableCell>
@@ -76,6 +78,11 @@ const TableList = ({ data, selectedTakeObj }) => {
                 thousandSeparator={true}
                 prefix={"$"}
               />
+            </TableCell>
+            <TableCell align="left">
+              <Moment format="YYYY/MM/DD">
+                {row.fecha}
+              </Moment>
             </TableCell>
             <TableCell align="left">{row.Creador}</TableCell>
             <TableCell align="left">{row.Atendedor}</TableCell>

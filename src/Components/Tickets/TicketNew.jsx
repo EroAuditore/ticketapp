@@ -14,6 +14,11 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import AddIcon from "@material-ui/icons/Add";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
 import MovimientoForm from "./MovimientoForm";
 import RetornosTab from "./../Retornos/RetornosTab";
 import DepositosTab from "./../Depositos/DepositosTab";
@@ -28,6 +33,7 @@ import {
   deleteRetorno,
   startSaveMovimiento,
   deleteComision,
+  startFSC,
 } from "../../Redux/Actions/movimientos";
 import moment from "moment";
 import CountUp from "react-countup";
@@ -45,6 +51,7 @@ import { startClientes } from "./../../Redux/Actions/agenteCliente";
 
 import AlertForm from "./../Common/AlertForm";
 import { movimientoSelector } from "../../Redux/Selectors";
+import FacturaTable from "./FacturaTable";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -93,6 +100,7 @@ const TicketNew = () => {
   const classes = useStyles();
   const [activeTab, setActiveTab] = useState(0);
   const [ModalState, setModalState] = useState(false);
+  const [ModalStateFacturas, setModalStateFacturas] = useState(false);
   const [totalMovimiento, setTotalMovimiento] = useState(0);
   const [totalDepositos, setTotalDepositos] = useState(0);
   const [totalRetornos, setTotalRetornos] = useState(0);
@@ -164,6 +172,7 @@ const TicketNew = () => {
 
   const handleCloseAdd = () => {
     setModalState(false);
+    setModalStateFacturas(false);
   };
 
   const handleCountUp = () => {};
@@ -365,15 +374,28 @@ const TicketNew = () => {
       solicitudId: selectedTake._id,
     });
     setAlertState(!alertState);
-    console.log("selected take", selectedTake._id);
+    setModalStateFacturas(!ModalStateFacturas);
   };
 
-  const toggleTake = (row) => {
-    setSelectedTake(row);
+  const toggleTake = () => {
     setAlertState(!alertState);
-    console.log("toggle take", row);
   };
 
+  const handleFacturas =(solicitud)=>{
+    setModalStateFacturas(true);
+    dispatch(startFSC(solicitud));
+    setSelectedTake(solicitud);
+
+   
+  }
+  const onQuitarSolicitud = () =>{
+    setMovimiento({
+      ...movimiento,
+      solicitudId: null
+    }) 
+  }
+
+  let  { solicitudId } = movimiento; 
   return (
     <Fragment>
       <Container>
@@ -521,8 +543,24 @@ const TicketNew = () => {
               </TabPanel>
 
               <TabPanel value={activeTab} index={4}>
-                <h4>Solicitud de facturas pendientes</h4>
-                <SolicitudFactura handleChecked={(obj) => toggleTake(obj)} />
+                {
+                 solicitudId ===null ? (
+                  <Fragment>
+                    <h3>SOLICITUD DE FACTURAS PENDIENTES DE ASIGNAR </h3>
+                    <SolicitudFactura
+                    handleFacturas={(obj)=> handleFacturas(obj)}
+                    />
+                  </Fragment>): 
+                 (
+                   <Fragment>
+                    <h3>FACTURAS ASIGNADAS AL MOVIMIENTO </h3>
+                    <FacturaTable />
+                    <Button size="small" color="primary" variant="contained" onClick={onQuitarSolicitud}>
+                      QUITAR
+                    </Button>
+                  </Fragment>
+                 )
+                 }
               </TabPanel>
             </Paper>
           </Grid>
@@ -531,7 +569,7 @@ const TicketNew = () => {
           ModalState={ModalState}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleSaveAdd}
-          ActiveTab={activeTab}
+          ButtonText ={"Guardar"}
         >
           <Paper className={classes.paperModal}>
             {activeTab === 0 ? (
@@ -560,12 +598,36 @@ const TicketNew = () => {
         </ModalForm>
         <AlertForm
           alertState={alertState}
-          handleClose={(obj) => toggleTake(obj)}
+          handleClose={ toggleTake}
           handleTake={handleTake}
           title={"Enlace facturación"}
         >
           {"Deseas asignar la solicitud de factura al movimiento?"}
         </AlertForm>
+        
+         <ModalForm
+          ModalState={ModalStateFacturas}
+          handleCloseAdd={handleCloseAdd}
+          handleSaveAdd={handleCloseAdd}
+          ButtonText ={"CERRAR"}
+        >
+        
+        <Card>
+        <CardHeader title="Asignar solicitud al movimiento" />
+      <Divider />
+      <CardContent>
+        <FacturaTable />
+        </CardContent>
+
+        </Card>
+        <CardActions>
+        <Button size="small" color="primary" variant="contained" onClick={toggleTake}>
+          ASIGNAR
+        </Button>
+      </CardActions>
+      
+        </ModalForm>
+
       </Container>
     </Fragment>
   );

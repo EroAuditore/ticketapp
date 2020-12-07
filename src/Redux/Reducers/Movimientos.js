@@ -19,6 +19,9 @@ import {
   ERROR_VM,
   START_PROCESS,
   END_PROCESS,
+  START_FSC,
+  SUCCESS_FSC,
+  ERROR_FSC
 } from "./../Actions/movimientos";
 
 const initialState = {
@@ -27,6 +30,7 @@ const initialState = {
   movimientos: [],
   comisiones: [],
   files: [],
+  facturas:[],
   movimiento: {},
   msg: {},
   successProcess: false,
@@ -141,6 +145,7 @@ const movimientosReducer = (state = initialState, action) => {
         successProcess: true,
       };
     case ERROR_VM:
+         
       return {
         ...state,
       };
@@ -156,10 +161,33 @@ const movimientosReducer = (state = initialState, action) => {
         successProcess: true,
       };
 
+
+      case START_FSC:
+        return {
+          ...state,
+          facturas: []
+        };
+
+        case SUCCESS_FSC:
+         
+          return {
+            ...state,
+            facturas: action.result.data,
+          };
+          case ERROR_FSC:
+           
+            return {
+              ...state,
+            };
+      
+
     default:
       return { ...state };
   }
 };
+
+
+
 
 function mapToDepositos(depositos) {
   var repl = depositos.map(function (obj) {

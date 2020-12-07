@@ -256,7 +256,7 @@ export function* AFAM({ payload }) {
   try {
     const factura = yield select(facturaGenSelector);
     const data = { ...factura, idMovimiento: payload._id };
-    console.log("saga data AFAM", data);
+   
     const result = yield call(
       apiCall,
       "/factura/movimiento/asignar",

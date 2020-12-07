@@ -33,7 +33,7 @@ const FacturasTable = ({ OnUploadXML, OnUploadPDF }) => {
       <TableHead>
         <TableRow>
           <TableCell align="left">Moneda </TableCell>
-          <TableCell align="left">RFCs </TableCell>
+          <TableCell align="left">RFC </TableCell>
           <TableCell align="left">Razon social</TableCell>
           <TableCell align="left">Sub Total</TableCell>
           <TableCell align="left">iva</TableCell>

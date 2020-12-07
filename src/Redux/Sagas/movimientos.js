@@ -16,6 +16,9 @@ import {
   START_VM,
   SUCCESS_VM,
   ERROR_VM,
+  SUCCESS_FSC,
+  START_FSC,
+  ERROR_FSC
 } from "../Actions/movimientos";
 import apiCall from "./../api/index";
 import {
@@ -47,7 +50,6 @@ export function* saveMovimiento({ payload }) {
     };
 
     const json = JSON.stringify(movimientoObj);
-    console.log("JsonString", json);
     const blob = new Blob([json], {
       type: "application/json",
     });
@@ -85,14 +87,14 @@ export function* attendMovimiento({ payload }) {
     yield put({ type: SUCCESS_ATTEND_MOVIMIENTO, result });
     yield call(redirectTo, "/tickets/atender");
   } catch (error) {
-    console.log("error", error);
+   
     yield put({ type: ERROR_ATTEND_MOVIMIENTO });
   }
 }
 
 export function* validaMovimiento({ payload }) {
   try {
-    console.log("valida movimiento payload", payload);
+    
     const result = yield call(
       apiCall,
       "/movimiento/validar",
@@ -108,16 +110,38 @@ export function* validaMovimiento({ payload }) {
   }
 }
 
+//Facturas de una Solicitud de un Cliente
+export function* startFSC({ payload }){
+
+  try {
+    const result = yield call(
+      apiCall,
+      "/facturas/solicitud",
+      payload,
+      null,
+      "POST"
+    );
+
+    yield put({ type: SUCCESS_FSC, result });
+   
+  } catch (error) {
+   
+    yield put({ type: ERROR_FSC });
+  }
+
+
+}
+
 //Watcher
 export default function* movimientos() {
   yield all([
     yield takeEvery(START_SAVE_MOVIMIENTO, saveMovimiento),
     yield takeEvery(START_ATTEND_MOVIMIENTO, attendMovimiento),
     yield takeEvery(START_VM, validaMovimiento),
+    yield takeEvery(START_FSC, startFSC)
   ]);
 }
 
-function redirectTo(location) {
-  console.log("location push:", location);
+function redirectTo(location) { 
   history.push(location);
 }

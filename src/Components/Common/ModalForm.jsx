@@ -47,10 +47,10 @@ const ModalForm = (props) => {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Detalle
+            
           </Typography>
           <Button autoFocus color="inherit" onClick={props.handleSaveAdd}>
-            Guardar
+           {props.ButtonText}
           </Button>
         </Toolbar>
       </AppBar>
