@@ -27,6 +27,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import PeopleIcon from "@material-ui/icons/People";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import AssessmentIcon from '@material-ui/icons/Assessment';
 
 const drawerWidth = 240;
 
@@ -122,7 +123,7 @@ const Layout = ({ children, history }) => {
       const jwt = localStorage.getItem("token");
       const { data } = jwtDecode(jwt);
       setUser((user) => data);
-    } catch (error) {}
+    } catch (error) { }
   }, []);
 
   return (
@@ -168,8 +169,8 @@ const Layout = ({ children, history }) => {
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
               ) : (
-                <ChevronRightIcon />
-              )}
+                  <ChevronRightIcon />
+                )}
             </IconButton>
           </div>
           <Divider />
@@ -278,6 +279,19 @@ const Layout = ({ children, history }) => {
               <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary="Clientes" />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            selected={selectedIndex === 8}
+            onClick={(event) => handleListItemClick(event, 8)}
+            component={Link}
+            to="/dashboard"
+          >
+            <ListItemIcon>
+              <AssessmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
           </ListItem>
         </Drawer>
         <main
