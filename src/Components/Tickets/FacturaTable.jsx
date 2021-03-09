@@ -7,10 +7,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import { LensTwoTone } from "@material-ui/icons";
+
 import FacturaEstatus from './../Common/FacturaEstatus';
 
 
