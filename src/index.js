@@ -34,6 +34,8 @@ import { ThemeProvider } from "@material-ui/core";
 import theme from "./Theme/theme";
 import Agentes from "./Components/AgenteClientes/Agentes";
 import Clientes from "./Components/AgenteClientes/Clientes";
+import Dashboard from "./Components/Dashoard";
+
 
 const Root = (
   <ThemeProvider theme={theme}>
@@ -61,8 +63,9 @@ const Root = (
             <Route path="/facturas/solicitud" component={Solicitud} />
             <Route path="/facturas" component={Facturas} />
             <Route path="/retornos" component={Retornos} />
+            <Route path="/dashboard" component={Dashboard} />
 
-            <Route path="/" component={LoginHome} />
+            <Route path="/" exact component={LoginHome} />
             <Redirect to="/depositos" />
           </Switch>
         </Layout>

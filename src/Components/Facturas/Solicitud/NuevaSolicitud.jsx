@@ -11,12 +11,12 @@ import {
   Box,
   Fab,
 } from "@material-ui/core";
-import PropTypes from "prop-types";
+
 import { makeStyles } from "@material-ui/core/styles";
 import CountUp from "react-countup";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import AddIcon from "@material-ui/icons/Add";
+
 import FacturaCForm from "../FacturaCForm";
 import SolicitudForm from "./SolicitudForm";
 import FacturaTable from "./FacturaTable";

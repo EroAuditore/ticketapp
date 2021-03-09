@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import Depositos from "./Depositos";
 
-const Details = props => {
+const Details = () => {
   return (
     <React.Fragment>
       <Depositos />

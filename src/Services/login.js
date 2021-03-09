@@ -7,5 +7,5 @@ export function login(username, password) {
 }
 
 export function fileURL() {
-  return filesUrl;
+  return process.env.REACT_APP_FILESURL;
 }

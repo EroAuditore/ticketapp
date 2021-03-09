@@ -5,7 +5,7 @@ import { apiUrl } from "../../config.json";
 const apiCall = async (url, data, headers, method) =>
   await axios({
     method,
-    url: apiUrl + url,
+    url: process.env.REACT_APP_APIURL + url,
     data,
     headers,
   });
