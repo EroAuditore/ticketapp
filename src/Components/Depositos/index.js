@@ -1,12 +1,10 @@
-import React from "react";
-import Depositos from "./Depositos";
+import React from 'react';
+import Depositos from './Depositos';
 
-const Details = () => {
-  return (
-    <React.Fragment>
-      <Depositos />
-    </React.Fragment>
-  );
-};
+const Details = () => (
+  <>
+    <Depositos />
+  </>
+);
 
 export default Details;

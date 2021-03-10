@@ -1,4 +1,7 @@
 import {
+  put, call, takeEvery, all, select,
+} from 'redux-saga/effects';
+import {
   START_GET_FACTURAS,
   SUCCESS_GET_FACTURAS,
   ERROR_GET_FACTURAS,
@@ -35,24 +38,23 @@ import {
   SUCCESS_VXML,
   ERROR_VXML,
   START_VXML,
-} from "./../Actions/facturas";
-import { facturaSelector, facturaGenSelector } from "./../Selectors/index";
+} from '../Actions/facturas';
+import { facturaSelector, facturaGenSelector } from '../Selectors/index';
 
-import { put, call, takeEvery, all, select } from "redux-saga/effects";
+import history from '../../history';
 
-import history from "./../../history";
+import apiCall from '../api/index';
 
-import apiCall from "./../api/index";
-
-//funcion generadora
-export function* getFacturas({ payload }) {
+// funcion generadora
+/* eslint-disable no-param-reassign, no-use-before-define */
+export function* getFacturas() {
   try {
     const result = yield call(
       apiCall,
-      "/facturas/movimientos",
+      '/facturas/movimientos',
       null,
       null,
-      "GET"
+      'GET',
     );
     yield put({ type: SUCCESS_GET_FACTURAS, result });
   } catch (error) {
@@ -60,14 +62,14 @@ export function* getFacturas({ payload }) {
   }
 }
 
-export function* getSolicitudes({ payload }) {
+export function* getSolicitudes() {
   try {
     const result = yield call(
       apiCall,
-      "/facturas/solicitudes",
+      '/facturas/solicitudes',
       null,
       null,
-      "GET"
+      'GET',
     );
     yield put({ type: SUCCESS_GET_SOLICITUDES, result });
   } catch (error) {
@@ -79,14 +81,14 @@ export function* attendFacturas({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/movimiento/facturas/tomar",
+      '/movimiento/facturas/tomar',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_ATTEND_FACTURAS, result });
-    yield call(redirectTo, "/facturas/atender");
+    yield call(redirectTo, '/facturas/atender');
   } catch (error) {
     yield put({ type: ERROR_ATTEND_FACTURAS });
   }
@@ -96,14 +98,14 @@ export function* genFactura({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/factura/generar",
+      '/factura/generar',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_GEN_FACTURA, result });
-    yield call(redirectTo, "/factura/generar");
+    yield call(redirectTo, '/factura/generar');
   } catch (error) {
     yield put({ type: ERROR_GEN_FACTURA });
   }
@@ -111,12 +113,12 @@ export function* genFactura({ payload }) {
 
 export function* updateFactura({ payload }) {
   try {
-    const result = yield call(
+    yield call(
       apiCall,
-      "/facturas/editar",
+      '/facturas/editar',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_EDIT_FACTURA, payload });
@@ -134,26 +136,23 @@ export function* saveSolFactura({ payload }) {
   };
 
   const data = new FormData();
-  data.append("file", payload.Archivo[0]);
+  data.append('file', payload.Archivo[0]);
   delete payload.Archivo;
 
   const json = JSON.stringify(solicitudObj);
-  console.log("JsonString", json);
-  const blob = new Blob([json], {
-    type: "application/json",
-  });
-  data.append("solicitudObj", json);
+
+  data.append('solicitudObj', json);
 
   try {
     const result = yield call(
       apiCall,
-      "/solicitud/guardar",
+      '/solicitud/guardar',
       solicitudObj,
       null,
-      "POST"
+      'POST',
     );
     yield put({ type: SUCCESS_SAVE_FACTURAS, result });
-    yield call(redirectTo, "/facturas/solicitud");
+    yield call(redirectTo, '/facturas/solicitud');
   } catch (error) {
     yield put({ type: ERROR_SAVE_FACTURAS, error });
   }
@@ -163,90 +162,82 @@ export function* filterSolicitud({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/facturas/filtrar",
+      '/facturas/filtrar',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_FILTER_SOLICITUDES, result });
-    
   } catch (error) {
-  
     yield put({ type: ERROR_FILTER_SOLICITUDES });
   }
 }
 
 export function* uploadFacturaXML({ payload }) {
-  
-
   const data = new FormData();
-  data.append("file", payload.Archivo[0]);
+  data.append('file', payload.Archivo[0]);
   delete payload.Archivo;
 
   const json = JSON.stringify(payload);
 
-  data.append("solicitudObj", json);
+  data.append('solicitudObj', json);
   try {
-    const result = yield call(apiCall, "/factura/xml", data, null, "POST");
-    yield put({ type: SUCCESS_UPLOAD_XML, result });   
+    const result = yield call(apiCall, '/factura/xml', data, null, 'POST');
+    yield put({ type: SUCCESS_UPLOAD_XML, result });
   } catch (error) {
     yield put({ type: ERROR_UPLOAD_XML, error });
   }
 }
 
 export function* uploadVXML({ payload }) {
-  
-
   const data = new FormData();
-  data.append("file", payload.Archivo[0]);
+  data.append('file', payload.Archivo[0]);
   delete payload.Archivo;
 
   const json = JSON.stringify(payload);
 
-  data.append("solicitudObj", json);
+  data.append('solicitudObj', json);
   try {
-    const result = yield call(apiCall, "/factura/xml/test", data, null, "POST");
+    const result = yield call(apiCall, '/factura/xml/test', data, null, 'POST');
     yield put({ type: SUCCESS_VXML, result });
-    /*yield call(redirectTo, "/facturas/solicitud");*/
+    /* yield call(redirectTo, "/facturas/solicitud"); */
   } catch (error) {
     yield put({ type: ERROR_VXML, error });
   }
 }
 
 export function* uploadFacturaPDF({ payload }) {
-  console.log("upload factura saga PDF", payload);
-
   const data = new FormData();
-  data.append("file", payload.Archivo[0]);
+  data.append('file', payload.Archivo[0]);
   delete payload.Archivo;
 
   const json = JSON.stringify(payload);
 
-  data.append("solicitudObj", json);
+  data.append('solicitudObj', json);
   try {
-    const result = yield call(apiCall, "/factura/pdf", data, null, "POST");
+    const result = yield call(apiCall, '/factura/pdf', data, null, 'POST');
     yield put({ type: SUCCESS_UPLOAD_PDF, result });
-    /*yield call(redirectTo, "/facturas/solicitud");*/
+    /* yield call(redirectTo, "/facturas/solicitud"); */
   } catch (error) {
     yield put({ type: ERROR_UPLOAD_PDF, error });
   }
 }
 
-/************************Movimientos pendientes de facturar ***********************/
+/** **********************Movimientos pendientes de facturar ********************** */
 
 export function* getMovimientoP({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/movimientos/pendientes/facturar",
+      '/movimientos/pendientes/facturar',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_GET_MOVIMIENTOP, result });
-    yield call(redirectTo, "/factura/generar");
+    yield call(redirectTo, '/factura/generar');
   } catch (error) {
     yield put({ type: ERROR_GET_MOVIMIENTOP });
   }
@@ -256,21 +247,21 @@ export function* AFAM({ payload }) {
   try {
     const factura = yield select(facturaGenSelector);
     const data = { ...factura, idMovimiento: payload._id };
-   
+
     const result = yield call(
       apiCall,
-      "/factura/movimiento/asignar",
+      '/factura/movimiento/asignar',
       data,
       null,
-      "POST"
+      'POST',
     );
     yield put({ type: SUCCESS_AFAM, result });
   } catch (error) {
     yield put({ type: ERROR_AFAM, error });
   }
 }
-
-//Watcher
+/* eslint-disable no-param-reassign, no-use-before-define */
+// Watcher
 
 export default function* facturas() {
   yield all([

@@ -1,8 +1,8 @@
-import { put, call, takeEvery, all, select } from "redux-saga/effects";
+import {
+  put, call, takeEvery, all,
+} from 'redux-saga/effects';
 
-import history from "./../../history";
-
-import apiCall from "./../api/index";
+import apiCall from '../api/index';
 
 import {
   START_AGENTES,
@@ -26,11 +26,11 @@ import {
   SUCCESS_AC,
   START_AC,
   ERROR_AC,
-} from "../Actions/agenteCliente";
+} from '../Actions/agenteCliente';
 
-export function* getAgentes({ payload }) {
+export function* getAgentes() {
   try {
-    const result = yield call(apiCall, "/listado/agente", null, null, "GET");
+    const result = yield call(apiCall, '/listado/agente', null, null, 'GET');
     yield put({ type: GET_AGENTES, result });
   } catch (error) {
     yield put({ type: ERROR_AGENTES, error });
@@ -39,7 +39,7 @@ export function* getAgentes({ payload }) {
 
 export function* getClientes({ payload }) {
   try {
-    const result = yield call(apiCall, "/filtro/agente", payload, null, "POST");
+    const result = yield call(apiCall, '/filtro/agente', payload, null, 'POST');
     yield put({ type: GET_CLIENTES, result });
   } catch (error) {
     yield put({ type: ERROR_CLIENTES, error });
@@ -50,10 +50,10 @@ export function* getSolicitud({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/facturas/filtrar",
+      '/facturas/filtrar',
       payload,
       null,
-      "POST"
+      'POST',
     );
     yield put({ type: GET_SOLICITUD, result });
   } catch (error) {
@@ -62,14 +62,13 @@ export function* getSolicitud({ payload }) {
 }
 
 export function* getCliente({ payload }) {
-  console.log("getCliente ", payload);
   try {
     const result = yield call(
       apiCall,
-      "/cliente/filtrar",
+      '/cliente/filtrar',
       payload,
       null,
-      "POST"
+      'POST',
     );
     yield put({ type: SUCCESS_FILTER_CLIENTE, result });
   } catch (error) {
@@ -81,10 +80,10 @@ export function* getAClientes({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/clientes/todos",
+      '/clientes/todos',
       payload,
       null,
-      "POST"
+      'POST',
     );
     yield put({ type: SUCCESS_AC, result });
   } catch (error) {
@@ -94,7 +93,7 @@ export function* getAClientes({ payload }) {
 
 export function* startNA({ payload }) {
   try {
-    const result = yield call(apiCall, "/agente/nuevo", payload, null, "POST");
+    const result = yield call(apiCall, '/agente/nuevo', payload, null, 'POST');
 
     yield put({ type: SUCCESS_NA, result });
   } catch (error) {
@@ -106,10 +105,10 @@ export function* startNC({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/clientes/nuevo",
+      '/clientes/nuevo',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_NC, result });
@@ -117,7 +116,7 @@ export function* startNC({ payload }) {
     yield put({ type: ERROR_NC });
   }
 }
-//WATCHER
+// WATCHER
 export default function* agenteClientes() {
   yield all([
     takeEvery(START_AGENTES, getAgentes),
@@ -125,7 +124,7 @@ export default function* agenteClientes() {
     takeEvery(START_SOLICITUD, getSolicitud),
     takeEvery(START_FILTER_CLIENTE, getCliente),
     takeEvery(START_NA, startNA),
-    takeEvery(START_AC, getAClientes) /*TODOS LOS CLIENTES **/,
+    takeEvery(START_AC, getAClientes) /* TODOS LOS CLIENTES * */,
     takeEvery(START_NC, startNC),
   ]);
 }

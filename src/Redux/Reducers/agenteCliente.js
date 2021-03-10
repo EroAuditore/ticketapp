@@ -1,4 +1,3 @@
-import { START_ATTEND_MOVIMIENTO } from "../Actions/movimientos";
 import {
   GET_AGENTES,
   START_AGENTES,
@@ -21,7 +20,7 @@ import {
   START_AC,
   SUCCESS_AC,
   ERROR_AC,
-} from "./../Actions/agenteCliente";
+} from '../Actions/agenteCliente';
 
 const initialState = {
   agentesList: [],
@@ -31,7 +30,7 @@ const initialState = {
   clientes: [],
 };
 
-//funcion reductora
+// funcion reductora
 const agenteClienteReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_AGENTES:
@@ -76,7 +75,7 @@ const agenteClienteReducer = (state = initialState, action) => {
     case ERROR_SOLICITUD:
       return { ...state };
 
-    /***CLIENTE **/
+    /** *CLIENTE * */
     case SUCCESS_FILTER_CLIENTE:
       return {
         ...state,
@@ -91,7 +90,7 @@ const agenteClienteReducer = (state = initialState, action) => {
     case ERROR_FILTER_CLIENTE:
       return { ...state };
 
-    /**** NUEVOS AGENTES Y CLIENTES *****/
+      /** ** NUEVOS AGENTES Y CLIENTES **** */
 
     case START_NA:
       return {
@@ -100,14 +99,14 @@ const agenteClienteReducer = (state = initialState, action) => {
     case SUCCESS_NA:
       return {
         ...state,
-        /*agentesList: [...state.agentesList, action.result.data],*/
+        /* agentesList: [...state.agentesList, action.result.data], */
         agentesList: action.result.data,
       };
 
     case ERROR_NA:
       return { ...state };
 
-    /**** TODOS LOS CLIENTES *****/
+      /** ** TODOS LOS CLIENTES **** */
 
     case START_AC:
       return {
@@ -122,7 +121,7 @@ const agenteClienteReducer = (state = initialState, action) => {
     case ERROR_AC:
       return { ...state };
 
-    /***nuevo cliente en el modulo de clientes */
+    /** *nuevo cliente en el modulo de clientes */
     case START_NC:
       return {
         ...state,

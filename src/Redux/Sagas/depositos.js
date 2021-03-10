@@ -1,22 +1,22 @@
-import { put, call, takeLatest } from "redux-saga/effects";
+import { put, call, takeLatest } from 'redux-saga/effects';
 import {
   START_GET_DEPOSITOS,
   SUCCESS_GET_DEPOSITOS,
   ERROR_GET_DEPOSITOS,
-} from "../Actions/depositos";
-import apiCall from "./../api/index";
+} from '../Actions/depositos';
+import apiCall from '../api/index';
 
-//funcion generadora
-export function* getDepositos({ payload }) {
+// funcion generadora
+export function* getDepositos() {
   try {
-    const result = yield call(apiCall, "/depositos", null, null, "GET");
+    const result = yield call(apiCall, '/depositos', null, null, 'GET');
     yield put({ type: SUCCESS_GET_DEPOSITOS, result });
   } catch (error) {
     yield put({ type: ERROR_GET_DEPOSITOS, error });
   }
 }
 
-//Watcher
+// Watcher
 export default function* depositos() {
   yield takeLatest(START_GET_DEPOSITOS, getDepositos);
 }

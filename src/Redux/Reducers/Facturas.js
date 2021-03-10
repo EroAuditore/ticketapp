@@ -23,10 +23,10 @@ import {
   DELETE_PARTIDA,
   START_UPLOAD_XML,
   SUCCESS_UPLOAD_XML,
-  ERROR_UPLOAD_XML,
+
   START_UPLOAD_PDF,
   SUCCESS_UPLOAD_PDF,
-  ERROR_UPLOAD_PDF,
+
   START_GEN_FACTURA,
   SUCCESS_GEN_FACTURA,
   ERROR_GEN_FACTURA,
@@ -43,7 +43,7 @@ import {
   START_PROCESS,
   END_PROCESS,
   NUEVA_SOLICITUD,
-} from "./../Actions/facturas";
+} from '../Actions/facturas';
 
 const initialState = {
   data: [],
@@ -61,8 +61,9 @@ const initialState = {
   solicitud: {},
   files: [],
 };
-
+/* eslint-disable no-param-reassign, no-use-before-define, no-param-reassign, no-return-assign, max-len, prefer-destructuring */
 const facturasReducer = (state = initialState, action) => {
+  
   switch (action.type) {
     case START_GET_FACTURAS:
       return {
@@ -106,11 +107,9 @@ const facturasReducer = (state = initialState, action) => {
       return {
         ...state,
         facturaEditar: {},
-        facturasMov: state.facturasMov.map((factura) =>
-          factura._id === action.payload._id
-            ? (factura = action.payload)
-            : factura
-        ),
+        facturasMov: state.facturasMov.map(factura => (factura._id === action.payload._id
+          ? (factura = action.payload)
+          : factura)),
       };
     case ERROR_EDIT_FACTURA:
       return {
@@ -124,7 +123,7 @@ const facturasReducer = (state = initialState, action) => {
       return {
         ...state,
         facturas: [
-          ...state.facturas.filter((factura) => factura._id !== action.payload),
+          ...state.facturas.filter(factura => factura._id !== action.payload),
         ],
       };
 
@@ -176,14 +175,13 @@ const facturasReducer = (state = initialState, action) => {
     case ADD_PARTIDA:
       return {
         ...state,
-        /**Filtramos las facturas para agregarle su partida */
-        facturas: state.facturas.map((factura) => {
+        /** Filtramos las facturas para agregarle su partida */
+        facturas: state.facturas.map(factura => {
           if (factura._id === action.payload.facturaId) {
             factura.partidas = [...factura.partidas, action.payload];
             return factura;
-          } else {
-            return factura;
           }
+          return factura;
         }),
         partidas: [...state.partidas, action.payload],
       };
@@ -192,7 +190,7 @@ const facturasReducer = (state = initialState, action) => {
         ...state,
         partidas: [
           ...state.partidas.filter(
-            (partidas) => partidas._id !== action.payload
+            partidas => partidas._id !== action.payload,
           ),
         ],
       };
@@ -206,11 +204,8 @@ const facturasReducer = (state = initialState, action) => {
       const { data } = action.result;
       return {
         ...state,
-        factura: { ...state.factura, estatus: "2" },
-        facturas: state.facturas.map((factura) =>{
-          if(factura._id === data[0]._id) { console.log("factura:", factura)}
-          return factura._id === data[0]._id ? (factura = data[0]) : factura
-        }),
+        factura: { ...state.factura, estatus: '2' },
+        facturas: state.facturas.map(factura => (factura._id === data[0]._id ? (factura = data[0]) : factura)),
         successProcess: true,
       };
 
@@ -221,26 +216,24 @@ const facturasReducer = (state = initialState, action) => {
     case SUCCESS_UPLOAD_PDF:
       return {
         ...state,
-        factura: { ...state.factura, estatus: "2" },
-        facturas: state.facturas.map((factura) =>
-          factura._id === data[0]._id ? (factura = data[0]) : factura
-        ),
+        factura: { ...state.factura, estatus: '2' },
+        facturas: state.facturas.map(factura => (factura._id === data[0]._id ? (factura = data[0]) : factura)),
         successProcess: true,
       };
 
     case START_GEN_FACTURA:
       return {
         ...state,
-        facturaTemp:{}
+        facturaTemp: {},
       };
     case SUCCESS_GEN_FACTURA:
       return {
         ...state,
         factura: action.result.data.factura,
         files: action.result.data.files,
-        //Facturas a generar
-        //Informacion de la solicitud
-        //Archivo de apoyo
+        // Facturas a generar
+        // Informacion de la solicitud
+        // Archivo de apoyo
       };
     case ERROR_GEN_FACTURA:
       return {
@@ -278,7 +271,7 @@ const facturasReducer = (state = initialState, action) => {
         solicitudes: [],
       };
 
-    /***validar XML */
+    /** *validar XML */
     case NUEVO_VXML:
       return {
         ...state,
@@ -290,19 +283,19 @@ const facturasReducer = (state = initialState, action) => {
         successProcess: false,
       };
     case SUCCESS_VXML:
-      
+
       return {
         ...state,
         facturaTemp: action.result.data,
         successProcess: true,
-        //Facturas a generar
-        //Informacion de la solicitud
-        //Archivo de apoyo
+        // Facturas a generar
+        // Informacion de la solicitud
+        // Archivo de apoyo
       };
     case ERROR_VXML:
       return {
         ...state,
-        /*facturaTemp: {},*/
+        /* facturaTemp: {}, */
       };
 
     case START_PROCESS:
@@ -328,5 +321,5 @@ const facturasReducer = (state = initialState, action) => {
       };
   }
 };
-
+/* eslint-enable no-param-reassign, no-use-before-define, no-param-reassign, no-return-assign, max-len, prefer-destructuring */
 export default facturasReducer;

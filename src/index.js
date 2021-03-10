@@ -1,41 +1,40 @@
-import React from "react";
+import React from 'react';
 
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import {
-  BrowserRouter,
+
   Switch,
   Route,
   Redirect,
   Router,
-} from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.css";
+} from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.css';
 
-import Layout from "./Components/Layout/Layout";
-import Depositos from "./Components/Depositos";
-import Tickets from "./Components/Tickets";
-import Facturas from "./Components/Facturas";
-import Retornos from "./Components/Retornos";
+import { ThemeProvider } from '@material-ui/core';
+import Layout from './Components/Layout/Layout';
+import Depositos from './Components/Depositos';
+import Tickets from './Components/Tickets';
+import Facturas from './Components/Facturas';
+import Retornos from './Components/Retornos';
 
-import store from "./Redux/store";
-import TicketNew from "./Components/Tickets/TicketNew";
-import LoginHome from "./Components/Login/LoginHome";
-import Settings from "./Components/Settings/Settings";
-import NuevoUsuario from "./Components/Settings/NuevoUsuario";
-import EditarUsuario from "./Components/Settings/EditarUsuario";
-import history from "./history";
-import Atender from "./Components/Facturas/Atender/Atender";
-import Solicitud from "./Components/Facturas/Solicitud";
-import NuevaSolicitud from "./Components/Facturas/Solicitud/NuevaSolicitud";
-import TicketAtencion from "./Components/Tickets/Atender/TicketAtencion";
-import AtenderSolicitud from "./Components/Facturas/Atender/AtenderSolicitud";
-import FacturaGenerar from "./Components/Facturas/Atender/FacturaGenerar";
-import { ThemeProvider } from "@material-ui/core";
-import theme from "./Theme/theme";
-import Agentes from "./Components/AgenteClientes/Agentes";
-import Clientes from "./Components/AgenteClientes/Clientes";
-import Dashboard from "./Components/Dashoard";
+import store from './Redux/store';
+import TicketNew from './Components/Tickets/TicketNew';
+import LoginHome from './Components/Login/LoginHome';
+import Settings from './Components/Settings/Settings';
+import NuevoUsuario from './Components/Settings/NuevoUsuario';
+import EditarUsuario from './Components/Settings/EditarUsuario';
+import history from './history';
 
+import Solicitud from './Components/Facturas/Solicitud';
+import NuevaSolicitud from './Components/Facturas/Solicitud/NuevaSolicitud';
+import TicketAtencion from './Components/Tickets/Atender/TicketAtencion';
+import AtenderSolicitud from './Components/Facturas/Atender/AtenderSolicitud';
+import FacturaGenerar from './Components/Facturas/Atender/FacturaGenerar';
+import theme from './Theme/theme';
+import Agentes from './Components/AgenteClientes/Agentes';
+import Clientes from './Components/AgenteClientes/Clientes';
+import Dashboard from './Components/Dashoard';
 
 const Root = (
   <ThemeProvider theme={theme}>
@@ -74,4 +73,4 @@ const Root = (
   </ThemeProvider>
 );
 
-ReactDOM.render(Root, document.getElementById("root"));
+ReactDOM.render(Root, document.getElementById('root'));

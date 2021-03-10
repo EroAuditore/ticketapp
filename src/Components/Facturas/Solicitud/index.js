@@ -1,8 +1,6 @@
-import React from "react";
-import Solicitud from "./Solicitud";
+import React from 'react';
+import Solicitud from './Solicitud';
 
-const index = () => {
-  return <Solicitud />;
-};
+const index = () => <Solicitud />;
 
 export default index;

@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import NumberFormat from "react-number-format";
-
+import NumberFormat from 'react-number-format';
+/* eslint-disable  react/prop-types */
 export default function PercentFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
 
@@ -9,7 +9,7 @@ export default function PercentFormatCustom(props) {
     <NumberFormat
       {...other}
       getInputRef={inputRef}
-      onValueChange={(values) => {
+      onValueChange={values => {
         onChange({
           target: {
             name: props.name,
@@ -23,3 +23,4 @@ export default function PercentFormatCustom(props) {
     />
   );
 }
+/* eslint-enable  react/prop-types */

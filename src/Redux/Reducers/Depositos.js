@@ -2,13 +2,13 @@ import {
   START_GET_DEPOSITOS,
   SUCCESS_GET_DEPOSITOS,
   ERROR_GET_DEPOSITOS,
-} from "../Actions/depositos";
+} from '../Actions/depositos';
 
 const initialState = {
   data: [],
 };
 
-//funcion reductora
+// funcion reductora
 const depositosReducer = (state = initialState, action) => {
   switch (action.type) {
     case START_GET_DEPOSITOS:

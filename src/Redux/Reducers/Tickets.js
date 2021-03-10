@@ -5,13 +5,13 @@ import {
   START_FILTER_MOVIMIENTO,
   SUCCESS_FILTER_MOVIMIENTO,
   ERROR_FILTER_MOVIMIENTO,
-} from "../Actions/tickets";
+} from '../Actions/tickets';
 
 const initialState = {
   data: [],
 };
 
-//funcion reductora
+// funcion reductora
 const ticketsReducer = (state = initialState, action) => {
   switch (action.type) {
     case START_GET_TICKETS:

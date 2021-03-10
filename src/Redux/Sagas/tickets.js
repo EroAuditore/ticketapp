@@ -1,4 +1,6 @@
-import { put, call, takeEvery, all } from "redux-saga/effects";
+import {
+  put, call, takeEvery, all,
+} from 'redux-saga/effects';
 
 import {
   START_GET_TICKETS,
@@ -7,15 +9,15 @@ import {
   START_FILTER_MOVIMIENTO,
   SUCCESS_FILTER_MOVIMIENTO,
   ERROR_FILTER_MOVIMIENTO,
-} from "../Actions/tickets";
-import apiCall from "./../api/index";
-import { getCurrentUserID } from "./../../Services/usersService";
+} from '../Actions/tickets';
+import apiCall from '../api/index';
+import { getCurrentUserID } from '../../Services/usersService';
 
-//funcion generadora
-export function* getTickets({ payload }) {
+// funcion generadora
+export function* getTickets() {
   const userData = { userId: getCurrentUserID() };
   try {
-    const result = yield call(apiCall, "/tickets", userData, null, "POST");
+    const result = yield call(apiCall, '/tickets', userData, null, 'POST');
     yield put({ type: SUCCESS_GET_TICKETS, result });
   } catch (error) {
     yield put({ type: ERROR_GET_TICKETS, error });
@@ -23,15 +25,13 @@ export function* getTickets({ payload }) {
 }
 
 export function* filterTickets({ payload }) {
-  console.log("filter ticket saga");
-
   try {
     const result = yield call(
       apiCall,
-      "/tickets/filtrar",
+      '/tickets/filtrar',
       payload,
       null,
-      "POST"
+      'POST',
     );
     yield put({ type: SUCCESS_FILTER_MOVIMIENTO, result });
   } catch (error) {
@@ -39,7 +39,7 @@ export function* filterTickets({ payload }) {
   }
 }
 
-//Watcher
+// Watcher
 export default function* tickets() {
   yield all([
     takeEvery(START_GET_TICKETS, getTickets),

@@ -1,9 +1,8 @@
 import {
-  ADD_FACTURA,
+
   ADD_DEPOSITO,
   ADD_RETORNO,
   ADD_COMISION,
-  DELETE_FACTURA,
   DELETE_RETORNO,
   DELETE_DEPOSITO,
   DELETE_COMISION,
@@ -21,8 +20,8 @@ import {
   END_PROCESS,
   START_FSC,
   SUCCESS_FSC,
-  ERROR_FSC
-} from "./../Actions/movimientos";
+  ERROR_FSC,
+} from '../Actions/movimientos';
 
 const initialState = {
   depositos: [],
@@ -30,17 +29,16 @@ const initialState = {
   movimientos: [],
   comisiones: [],
   files: [],
-  facturas:[],
+  facturas: [],
   movimiento: {},
   msg: {},
   successProcess: false,
 };
 
-//Reducer que interactua con el state
+// Reducer que interactua con el state
+/* eslint-disable no-param-reassign, no-use-before-define */
 const movimientosReducer = (state = initialState, action) => {
   switch (action.type) {
-    /*case ADD_FACTURA:
-      return { ...state, facturas: [...state.facturas, action.payload] };*/
     case ADD_DEPOSITO:
       return {
         ...state,
@@ -57,20 +55,20 @@ const movimientosReducer = (state = initialState, action) => {
         comisiones: [...state.comisiones, action.payload],
       };
 
-    /*case DELETE_FACTURA:
+      /* case DELETE_FACTURA:
       return {
         ...state,
         facturas: [
           ...state.facturas.filter((factura) => factura._id !== action.payload),
         ],
-      };*/
+      }; */
 
     case DELETE_DEPOSITO:
       return {
         ...state,
         depositos: [
           ...state.depositos.filter(
-            (deposito) => deposito._id !== action.payload
+            deposito => deposito._id !== action.payload,
           ),
         ],
       };
@@ -79,7 +77,7 @@ const movimientosReducer = (state = initialState, action) => {
       return {
         ...state,
         retornos: [
-          ...state.retornos.filter((retorno) => retorno._id != action.payload),
+          ...state.retornos.filter(retorno => retorno._id !== action.payload),
         ],
       };
 
@@ -88,7 +86,7 @@ const movimientosReducer = (state = initialState, action) => {
         ...state,
         comisiones: [
           ...state.comisiones.filter(
-            (comision) => comision._id !== action.payload
+            comision => comision._id !== action.payload,
           ),
         ],
       };
@@ -108,7 +106,7 @@ const movimientosReducer = (state = initialState, action) => {
       return { ...state, isLoading: true };
 
     case SUCCESS_ATTEND_MOVIMIENTO:
-      console.log("succcess atend", action.payload);
+
       return {
         isLoading: false,
         movimiento: action.result.data.movimiento,
@@ -137,15 +135,15 @@ const movimientosReducer = (state = initialState, action) => {
           depositos: action.payload.depositos,
           retornos: action.payload.retornos,
           comisiones: action.payload.comisiones,
-          estatusDeposito: action.payload.depositos ? "generado" : "pendiente",
-          estatusRetorno: action.payload.retornos ? "generado" : "pendiente",
-          estatusComision: action.payload.comisiones ? "generado" : "pendiente",
+          estatusDeposito: action.payload.depositos ? 'generado' : 'pendiente',
+          estatusRetorno: action.payload.retornos ? 'generado' : 'pendiente',
+          estatusComision: action.payload.comisiones ? 'generado' : 'pendiente',
         },
 
         successProcess: true,
       };
     case ERROR_VM:
-         
+
       return {
         ...state,
       };
@@ -161,62 +159,53 @@ const movimientosReducer = (state = initialState, action) => {
         successProcess: true,
       };
 
+    case START_FSC:
+      return {
+        ...state,
+        facturas: [],
+      };
 
-      case START_FSC:
-        return {
-          ...state,
-          facturas: []
-        };
+    case SUCCESS_FSC:
 
-        case SUCCESS_FSC:
-         
-          return {
-            ...state,
-            facturas: action.result.data,
-          };
-          case ERROR_FSC:
-           
-            return {
-              ...state,
-            };
-      
+      return {
+        ...state,
+        facturas: action.result.data,
+      };
+    case ERROR_FSC:
+
+      return {
+        ...state,
+      };
 
     default:
       return { ...state };
   }
 };
 
-
-
-
 function mapToDepositos(depositos) {
-  var repl = depositos.map(function (obj) {
-    return {
-      _id: obj._id,
-      bancoDeposito: obj.banco,
-      depositoMonto: obj.monto,
-      comentarioDeposito: obj.comentarios,
-      fechaDeposito: obj.fecha,
-      fechaDepositoStr: obj.fecha,
-      ...obj,
-    };
-  });
+  const repl = depositos.map(obj => ({
+    _id: obj._id,
+    bancoDeposito: obj.banco,
+    depositoMonto: obj.monto,
+    comentarioDeposito: obj.comentarios,
+    fechaDeposito: obj.fecha,
+    fechaDepositoStr: obj.fecha,
+    ...obj,
+  }));
   return repl;
 }
 
 function mapToRetornos(retornos) {
-  var repl = retornos.map(function (obj) {
-    return {
-      _id: obj._id,
-      nombreRetorno: obj.Nombre,
-      entidadRetorno: obj.Banco,
-      retornoMonto: obj.Monto,
-      comentarioRetorno: obj.Comentario,
-      cuentaRetorno: obj.Cuenta_clabe,
-      ...obj,
-    };
-  });
+  const repl = retornos.map(obj => ({
+    _id: obj._id,
+    nombreRetorno: obj.Nombre,
+    entidadRetorno: obj.Banco,
+    retornoMonto: obj.Monto,
+    comentarioRetorno: obj.Comentario,
+    cuentaRetorno: obj.Cuenta_clabe,
+    ...obj,
+  }));
   return repl;
 }
-
+/* eslint-enable no-param-reassign, no-use-before-define */
 export default movimientosReducer;

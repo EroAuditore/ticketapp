@@ -1,12 +1,12 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-import depositosReducer from "./Depositos";
+import depositosReducer from './Depositos';
 
-import ticketsReducer from "./Tickets";
-import movimientosReducer from "./Movimientos";
-import usersReducer from "./Users";
-import facturasReducer from "./Facturas";
-import agenteClienteReducer from "./agenteCliente";
+import ticketsReducer from './Tickets';
+import movimientosReducer from './Movimientos';
+import usersReducer from './Users';
+import facturasReducer from './Facturas';
+import agenteClienteReducer from './agenteCliente';
 
 const allReducers = combineReducers({
   depositos: depositosReducer,

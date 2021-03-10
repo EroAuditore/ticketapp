@@ -1,4 +1,4 @@
-import { START_EDIT_USERS, SUCCESS_EDIT_USERS } from "./../Actions/users";
+import { START_EDIT_USERS, SUCCESS_EDIT_USERS } from '../Actions/users';
 
 const initialState = {
   user: {},

@@ -55,7 +55,7 @@ const Settings = () => {
       const result = await getUsers();
       setDataUsers(result.data);
     } catch (e) {
-      console.log("No se pudo cargar los usuarios", e);
+      console.log("No se pudo cargar los usuarios :(", e);
     }
   };
 

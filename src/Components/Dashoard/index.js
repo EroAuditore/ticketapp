@@ -1,8 +1,6 @@
-import React from "react";
-import Dashboard from "./Dashboard";
+import React from 'react';
+import Dashboard from './Dashboard';
 
-const Index = () => {
-    return <Dashboard />;
-};
+const Index = () => <Dashboard />;
 
 export default Index;

@@ -1,11 +1,10 @@
 import {
   put,
   call,
-  takeLatest,
   select,
   all,
   takeEvery,
-} from "redux-saga/effects";
+} from 'redux-saga/effects';
 
 import {
   START_SAVE_MOVIMIENTO,
@@ -18,20 +17,19 @@ import {
   ERROR_VM,
   SUCCESS_FSC,
   START_FSC,
-  ERROR_FSC
-} from "../Actions/movimientos";
-import apiCall from "./../api/index";
+  ERROR_FSC,
+  SUCCESS_ATTEND_MOVIMIENTO,
+} from '../Actions/movimientos';
+import apiCall from '../api/index';
 import {
   retornoSelector,
   depositoSelector,
-  facturaSelector,
   comisionesSelector,
-} from "./../Selectors/index";
-import history from "./../../history";
-import { SUCCESS_ATTEND_MOVIMIENTO } from "./../Actions/movimientos";
-import { ERROR_AFAM } from "./../Actions/facturas";
+} from '../Selectors/index';
+import history from '../../history';
 
-//funcion generadora
+// funcion generadora
+/* eslint-disable no-param-reassign, no-use-before-define */
 export function* saveMovimiento({ payload }) {
   try {
     const retornos = yield select(retornoSelector);
@@ -39,7 +37,7 @@ export function* saveMovimiento({ payload }) {
     const comisiones = yield select(comisionesSelector);
 
     const data = new FormData();
-    data.append("file", payload.Archivo[0]);
+    data.append('file', payload.Archivo[0]);
 
     delete payload.Archivo;
     const movimientoObj = {
@@ -50,26 +48,23 @@ export function* saveMovimiento({ payload }) {
     };
 
     const json = JSON.stringify(movimientoObj);
-    const blob = new Blob([json], {
-      type: "application/json",
-    });
-    data.append("movimientoObj", json);
+
+    data.append('movimientoObj', json);
 
     const result = yield call(
       apiCall,
-      "/movimiento/nuevo",
+      '/movimiento/nuevo',
       data,
 
       {
-        Accept: "application/json",
-        "content-type": "multipart/form-data",
+        Accept: 'application/json',
+        'content-type': 'multipart/form-data',
       },
-      "POST"
+      'POST',
     );
     yield put({ type: SUCCESS_SAVE_MOVIMIENTO, result });
-    yield call(redirectTo, "/tickets");
+    yield call(redirectTo, '/tickets');
   } catch (error) {
-    console.log(error);
     yield put({ type: ERROR_SAVE_MOVIMIENTO, error });
   }
 }
@@ -78,70 +73,63 @@ export function* attendMovimiento({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/movimiento/atender",
+      '/movimiento/atender',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_ATTEND_MOVIMIENTO, result });
-    yield call(redirectTo, "/tickets/atender");
+    yield call(redirectTo, '/tickets/atender');
   } catch (error) {
-   
     yield put({ type: ERROR_ATTEND_MOVIMIENTO });
   }
 }
+/* eslint-enable no-param-reassign, no-use-before-define */
 
 export function* validaMovimiento({ payload }) {
   try {
-    
-    const result = yield call(
+    yield call(
       apiCall,
-      "/movimiento/validar",
+      '/movimiento/validar',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_VM, payload });
-    /*yield call(redirectTo, "/tickets/atender");*/
   } catch (error) {
     yield put({ type: ERROR_VM });
   }
 }
 
-//Facturas de una Solicitud de un Cliente
-export function* startFSC({ payload }){
-
+// Facturas de una Solicitud de un Cliente
+export function* startFSC({ payload }) {
   try {
     const result = yield call(
       apiCall,
-      "/facturas/solicitud",
+      '/facturas/solicitud',
       payload,
       null,
-      "POST"
+      'POST',
     );
 
     yield put({ type: SUCCESS_FSC, result });
-   
   } catch (error) {
-   
     yield put({ type: ERROR_FSC });
   }
-
-
 }
 
-//Watcher
+// Watcher
 export default function* movimientos() {
   yield all([
     yield takeEvery(START_SAVE_MOVIMIENTO, saveMovimiento),
     yield takeEvery(START_ATTEND_MOVIMIENTO, attendMovimiento),
     yield takeEvery(START_VM, validaMovimiento),
-    yield takeEvery(START_FSC, startFSC)
+    yield takeEvery(START_FSC, startFSC),
   ]);
 }
 
-function redirectTo(location) { 
+function redirectTo(location) {
   history.push(location);
 }

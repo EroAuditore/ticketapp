@@ -1,12 +1,10 @@
-import React from "react";
-import Tickets from "./Tickets";
+import React from 'react';
+import Tickets from './Tickets';
 
-const Details = (props) => {
-  return (
-    <React.Fragment>
-      <Tickets></Tickets>
-    </React.Fragment>
-  );
-};
+const Details = () => (
+  <>
+    <Tickets />
+  </>
+);
 
 export default Details;

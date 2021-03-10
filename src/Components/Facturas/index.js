@@ -1,8 +1,6 @@
-import React from "react";
-import Facturas from "./Facturas";
+import React from 'react';
+import Facturas from './Facturas';
 
-const IndexFact = () => {
-  return <Facturas />;
-};
+const IndexFact = () => <Facturas />;
 
 export default IndexFact;

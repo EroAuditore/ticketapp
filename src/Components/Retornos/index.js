@@ -1,12 +1,10 @@
-import React from "react";
-import Retornos from "./Retornos";
+import React from 'react';
+import Retornos from './Retornos';
 
-const Retorno = (props) => {
-  return (
-    <React.Fragment>
-      <Retornos />
-    </React.Fragment>
-  );
-};
+const Retorno = props => (
+  <>
+    <Retornos />
+  </>
+);
 
 export default Retorno;

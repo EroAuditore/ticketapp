@@ -1,10 +1,10 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import allReducers from "./Reducers";
+import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import allReducers from './Reducers';
 
-import createSagaMiddleware from "redux-saga";
-import rootSaga from "./Sagas";
-//Devtool Xtention:
-//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+import rootSaga from './Sagas';
+// Devtool Xtention:
+// window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 
 const sagaMiddleWare = createSagaMiddleware();
 
@@ -19,7 +19,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   allReducers,
-  composeEnhancers(applyMiddleware(sagaMiddleWare))
+  composeEnhancers(applyMiddleware(sagaMiddleWare)),
 );
 
 // LANZAR MIDDLEWARE

@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme } from '@material-ui/core/styles';
 
 /*
 const theme = createMuiTheme({
@@ -9,7 +9,7 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: "#eceff1",
-    },*//*
+    }, *//*
   },
 });
 */
