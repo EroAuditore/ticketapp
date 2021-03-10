@@ -12,12 +12,8 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-<<<<<<< HEAD
     "axios": "^0.19.2",
     "babel-eslint": "10.1.x",
-=======
-    "axios": "^0.21.1",
->>>>>>> f9c72110561a9736abcb8c575dcde92bc42515ca
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.4",
     "date-fns": "^2.12.0",
