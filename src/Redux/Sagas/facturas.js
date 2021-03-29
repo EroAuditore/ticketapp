@@ -147,7 +147,7 @@ export function* saveSolFactura({ payload }) {
     const result = yield call(
       apiCall,
       '/solicitud/guardar',
-      solicitudObj,
+      data,
       null,
       'POST',
     );

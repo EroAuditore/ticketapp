@@ -179,7 +179,7 @@ const NuevaSolicitud = () => {
 
   const onSaveSol = () => {
     dispatch(startSaveFacturas(solicitud));
-    console.log("guardando la solicitud");
+    
   };
 
   useEffect(() => {
@@ -250,12 +250,20 @@ const NuevaSolicitud = () => {
   };
 
   const handleFileUpload = (file) => {
+    if (file.length == 0) return;
+    console.log('file:', file)
     setSolicitud({
       ...solicitud,
       Archivo: file,
     });
   };
-
+  const handledeleteFile =() =>{
+    console.log('delete:')
+    setSolicitud({
+      ...solicitud,
+      Archivo: [],
+    });
+  }
   const onCalculoTotal = () => {
     const { subTotal } = factura;
     setFactura({
@@ -350,7 +358,7 @@ const NuevaSolicitud = () => {
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
-                <DropZone onChange={(file) => handleFileUpload(file)} />
+                <DropZone onChange={(file) => handleFileUpload(file)  } deleteFile={()=>handledeleteFile()} />
               </TabPanel>
             </Paper>
           </Grid>
@@ -365,6 +373,7 @@ const NuevaSolicitud = () => {
           ModalState={dialogState}
           handleCloseAdd={handleClose}
           handleSaveAdd={handleAddClick}
+          ButtonText ={"Guardar"}
         >
           <Paper className={classes.paperModal}>
             <FacturaCForm
@@ -379,12 +388,14 @@ const NuevaSolicitud = () => {
           ModalState={ModalState}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleSaveAdd}
+          ButtonText ={"Guardar"}
         >
           <Paper className={classes.paperModal}>
             <PartidaForm
               handleAddPartida={handleNewPartida}
               handleOnChange={handleOnChangePartidaForm}
               data={partida}
+              ButtonText ={"Guardar"}
             />
           </Paper>
         </ModalForm>

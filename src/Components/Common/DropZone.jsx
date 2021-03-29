@@ -1,12 +1,13 @@
 import React from "react";
 
-import { DropzoneArea, DropzoneAreaBase } from "material-ui-dropzone";
+import { DropzoneArea } from "material-ui-dropzone";
 
-const DropZone = ({ onChange }) => {
+const DropZone = ({ onChange, deleteFile}) => {
   return (
     <DropzoneArea
+      
       onChange={(file) => onChange(file)}
-      onDelete={(fileObj) => console.log("Removed File:", fileObj)}
+      onDelete={() => deleteFile()}
       onAlert={(message, variant) => console.log(`${variant}: ${message}`)}
       maxFileSize={2000000}
       filesLimit={1}
