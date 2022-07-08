@@ -22,7 +22,7 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.19",
     "material-ui-dropzone": "^3.3.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.11.1",
     "react-countup": "^4.3.3",
